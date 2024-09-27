@@ -6,3 +6,4 @@ use A17\Twill\Facades\TwillRoutes;
 // TwillRoutes::module('posts');
 
 TwillRoutes::module('products');
+TwillRoutes::module('services');

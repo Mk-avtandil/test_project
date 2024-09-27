@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Twill;
 
 use A17\Twill\Models\Contracts\TwillModelContract;
-use A17\Twill\Services\Forms\Fields\Checkbox;
-use A17\Twill\Services\Forms\Fields\Wysiwyg;
+use A17\Twill\Services\Forms\Fields\DatePicker;
 use A17\Twill\Services\Listings\Columns\Text;
 use A17\Twill\Services\Listings\TableColumns;
 use A17\Twill\Services\Forms\Fields\Input;
 use A17\Twill\Services\Forms\Form;
-use A17\Twill\Http\Controllers\Admin\ModuleController as BaseModuleController;
+use A17\Twill\Http\Controllers\Admin\NestedModuleController as BaseModuleController;
 
-class ProductController extends BaseModuleController
+class ServiceController extends BaseModuleController
 {
-    protected $moduleName = 'products';
+    protected $moduleName = 'services';
     protected $titleColumnKey = 'type';
     protected $titleColumnLabel = 'Type';
     protected $titleFormKey = 'type';
@@ -29,31 +28,21 @@ class ProductController extends BaseModuleController
         self::$formFields = [
             Input::make()
                 ->name('type')
-                ->label('Тип продукта')
+                ->label('Тип сервиса')
                 ->maxLength(100)
                 ->required(),
-            Wysiwyg::make()
-                ->name('description')
-                ->label('Описание')
-                ->required()
-                ->maxLength(1000),
-            Input::make()
-                ->name('color')
-                ->required()
-                ->label('Цвет'),
-            Input::make()
-                ->name('size')
-                ->maxLength(100)
-                ->required()
-                ->type('number')
-                ->label('Размер'),
             Input::make()
                 ->name('price')
                 ->type('number')
                 ->required()
                 ->label('Цена'),
-            Checkbox::make()
-                ->name('is_in_stock')
+            DatePicker::make()
+                ->name("deadline")
+                ->label("Срок выполнения")
+                ->required(),
+            Input::make()
+                ->name('example_link')
+                ->label('Ссылка...'),
         ];
     }
 
@@ -76,8 +65,6 @@ class ProductController extends BaseModuleController
     {
         return Form::make(self::$formFields);
     }
-
-
     /**
      * This is an example and can be removed if no modifications are needed to the table.
      */
