@@ -22,7 +22,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         TwillNavigation::addLink(
-            NavigationLink::make()->forModule('products')
+            NavigationLink::make()->forModule('products'),
+        );
+        TwillNavigation::addLink(
+            NavigationLink::make()->forModule('orders'),
         );
     }
 }
