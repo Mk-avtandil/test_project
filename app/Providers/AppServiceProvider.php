@@ -21,11 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        TwillNavigation::addLink(
-            NavigationLink::make()->forModule('products'),
-        );
-        TwillNavigation::addLink(
-            NavigationLink::make()->forModule('orders'),
-        );
+        $modules = ['products', 'services', 'orders'];
+
+        foreach ($modules as $module) {
+            TwillNavigation::addLink(NavigationLink::make()->forModule($module));
+        }
     }
 }
