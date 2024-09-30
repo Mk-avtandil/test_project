@@ -86,7 +86,19 @@ class ProductController extends BaseModuleController
         $table = parent::additionalIndexTableColumns();
 
         $table->add(
-            Text::make()->field('description')->title('Description')
+            Text::make()->field('size')->title('Size')
+        );
+
+        $table->add(
+            Text::make()->field('price')->title('Price')->customRender(function ($product) {
+                return '$' . $product->price;
+            })
+        );
+
+        $table->add(
+            Text::make()->field('is_in_stock')->title('Is in stock')->customRender(function ($product) {
+                return $product->is_in_stock ? 'Yes' : 'No';
+            })
         );
 
         return $table;
