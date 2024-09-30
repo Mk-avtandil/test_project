@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use A17\Twill\Models\Behaviors\HasBlocks;
+use A17\Twill\Models\Behaviors\HasSlug;
 use A17\Twill\Models\Behaviors\HasMedias;
 use A17\Twill\Models\Behaviors\HasFiles;
 use A17\Twill\Models\Behaviors\HasRevisions;
@@ -10,28 +11,36 @@ use A17\Twill\Models\Behaviors\HasPosition;
 use A17\Twill\Models\Behaviors\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Product extends Model implements Sortable
+class Order extends Model implements Sortable
 {
-    use HasBlocks, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory;
+    use HasBlocks, HasSlug, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory;
 
     protected $fillable = [
         'published',
         'title',
         'description',
         'position',
-        'size',
-        'type',
-        'color',
-        'is_in_stock',
-        'price'
+        'user_id',
+        'orderable_type',
+        'orderable_id',
+        'status',
+        'details'
     ];
 
-    public function orders() : MorphMany {
-        return $this->morphMany(Order::class, 'orderable');
+    public $slugAttributes = [
+        'title',
+    ];
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderable() {
+        return $this->morphTo();
     }
 }
