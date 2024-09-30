@@ -23,6 +23,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->randomFloat(2, 100, 1000),
             'is_in_stock' => $this->faker->boolean(),
             'description' => $this->faker->text(),
+            'published' => $this->faker->boolean(),
         ];
     }
 }

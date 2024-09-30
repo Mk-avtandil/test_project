@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Service;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Product::factory()->count(40)->create();
+        Service::factory()->count(40)->create();
         Order::factory()->count(80)->create();
     }
 }

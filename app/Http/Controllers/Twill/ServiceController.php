@@ -73,8 +73,15 @@ class ServiceController extends BaseModuleController
         $table = parent::additionalIndexTableColumns();
 
         $table->add(
-            Text::make()->field('description')->title('Description')
+            Text::make()->field('price')->title('Price')->customRender(function ($service) {
+                return '$' . $service->price;
+            })
         );
+        $table->add(
+            Text::make()->field('deadline')->title('Deadline')->customRender(function ($service) {
+                return $service->deadline;
+            }
+        ));
 
         return $table;
     }
