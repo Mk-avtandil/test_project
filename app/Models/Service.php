@@ -25,4 +25,9 @@ class Service extends Model implements Sortable
         'deadline',
         'example_link'
     ];
+
+    public function orders()
+    {
+        return $this->morphMany(Order::class, 'orderable');
+    }
 }

@@ -15,9 +15,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->date('deadline');
             $table->string('example_link')->nullable();
-
             $table->integer('position')->unsigned()->nullable();
-
             $table->nestedSet();
         });
 
