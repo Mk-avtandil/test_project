@@ -38,7 +38,6 @@ class OrderController extends BaseModuleController
             Breadcrumbs::make([
                 BreadcrumbItem::make()
                     ->url(route('twill.orders.index'))
-                    ->displayOnListing()
                     ->displayOnForm()
                     ->label('Orders'),
                 BreadcrumbItem::make()
