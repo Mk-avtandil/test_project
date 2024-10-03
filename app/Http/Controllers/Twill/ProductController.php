@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Twill;
 
 use A17\Twill\Models\Contracts\TwillModelContract;
 use A17\Twill\Services\Forms\Fields\Checkbox;
+use A17\Twill\Services\Forms\Fields\Medias;
 use A17\Twill\Services\Forms\Fields\Wysiwyg;
 use A17\Twill\Services\Listings\Columns\Text;
 use A17\Twill\Services\Listings\TableColumns;
@@ -37,6 +38,9 @@ class ProductController extends BaseModuleController
                 ->label('Описание')
                 ->required()
                 ->maxLength(1000),
+            Medias::make()
+                ->name('cover')
+                ->label('Images'),
             Input::make()
                 ->name('color')
                 ->required()
@@ -77,7 +81,6 @@ class ProductController extends BaseModuleController
         return Form::make(self::$formFields);
     }
 
-
     /**
      * This is an example and can be removed if no modifications are needed to the table.
      */
@@ -98,6 +101,13 @@ class ProductController extends BaseModuleController
         $table->add(
             Text::make()->field('is_in_stock')->title('Is in stock')->customRender(function ($product) {
                 return $product->is_in_stock ? 'Yes' : 'No';
+            })
+        );
+
+        $table->add(
+            Text::make()->field('cover')->title('Images')->customRender(function ($product) {
+                $mediaUrl = $product->image('cover', 'default');
+                return $mediaUrl ? "<img src=\"{$mediaUrl}\" alt=\"Cover Image\" style=\"width: 100px;\" />" : 'No image';
             })
         );
 
