@@ -9,14 +9,18 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('/services')->name('service.')->group(function () {
-    Route::get('/', [ServiceController::class, 'index'])->name('.index');
-    Route::get('/{service}', [ServiceController::class, 'show'])->name('.show');
+Route::prefix('/services')
+    ->name('service.')
+    ->group(function () {
+        Route::get('/', [ServiceController::class, 'index'])->name('.index');
+        Route::get('/all', [ServiceController::class, 'getAllServices'])->name('.getAllServices');
+        Route::get('/{service}', [ServiceController::class, 'show'])->name('.show');
 });
 
 Route::prefix('products')
     ->name('product.')
     ->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::get('/{product}', [ProductController::class, 'show'])->name('show');
+        Route::get('/', [ProductController::class, 'index'])->name('.index');
+        Route::get('/all', [ProductController::class, 'getAllProducts'])->name('.getAllProducts');
+        Route::get('/{product}', [ProductController::class, 'show'])->name('.show');
 });
