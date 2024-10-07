@@ -27,17 +27,9 @@ class ProductController extends Controller
 
     public function getAllProducts(Request $request): ProductCollection
     {
-        $cacheKey = "all_products";
-
-        if (Cache::has($cacheKey)) {
-            $products = Cache::get($cacheKey);
-        } else {
-            $products = Product::all();
-
-            if ($products->isNotEmpty()) {
-                Cache::put($cacheKey, $products, 60);
-            }
-        }
+        $products = Cache::remember('all_products', 60, function () {
+            return Product::all();
+        });
 
         return new ProductCollection($products);
     }

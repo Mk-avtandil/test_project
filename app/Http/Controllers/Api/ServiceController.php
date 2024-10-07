@@ -32,17 +32,10 @@ class ServiceController extends Controller
 
     public function getAllServices(Request $request): ServiceCollection
     {
-        $cacheKey = "all_services";
+        $services = Cache::remember('all_services', 60, function () {
+            return Service::all();
+        });
 
-        if (Cache::has($cacheKey)) {
-            $services = Cache::get($cacheKey);
-        } else {
-            $services = Service::all();
-
-            if ($services->isNotEmpty()) {
-                Cache::put($cacheKey, $services, 60);
-            }
-        }
         return new ServiceCollection($services);
     }
 }
