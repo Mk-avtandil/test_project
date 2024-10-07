@@ -1,6 +1,9 @@
 <?php
 
 return [
+//    'enabled' => [
+//        'users-2fa' => true,
+//    ],
     'media_library' => [
         'disk' => 'twill_media_library',
         'endpoint_type' => env('MEDIA_LIBRARY_ENDPOINT_TYPE', 'local'),

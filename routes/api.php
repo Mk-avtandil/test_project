@@ -5,9 +5,9 @@ use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+});
 
 Route::prefix('/services')
     ->name('service.')
@@ -15,7 +15,7 @@ Route::prefix('/services')
         Route::get('/', [ServiceController::class, 'index'])->name('.index');
         Route::get('/all', [ServiceController::class, 'getAllServices'])->name('.getAllServices');
         Route::get('/{service}', [ServiceController::class, 'show'])->name('.show');
-});
+    });
 
 Route::prefix('products')
     ->name('product.')
@@ -23,4 +23,4 @@ Route::prefix('products')
         Route::get('/', [ProductController::class, 'index'])->name('.index');
         Route::get('/all', [ProductController::class, 'getAllProducts'])->name('.getAllProducts');
         Route::get('/{product}', [ProductController::class, 'show'])->name('.show');
-});
+    });
