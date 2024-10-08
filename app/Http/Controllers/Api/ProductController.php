@@ -33,4 +33,6 @@ class ProductController extends Controller
 
         return new ProductCollection($products);
     }
+
+
 }
