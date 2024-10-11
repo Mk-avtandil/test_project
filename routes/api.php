@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Http\Request;
@@ -20,8 +21,13 @@ Route::prefix('/services')
 Route::prefix('products')
     ->name('product.')
     ->group(function () {
-
         Route::get('/', [ProductController::class, 'index'])->name('.index');
         Route::get('/all', [ProductController::class, 'getAllProducts'])->name('.getAllProducts');
         Route::get('/{product}', [ProductController::class, 'show'])->name('.show');
+    });
+
+Route::prefix('orders')
+    ->name('order.')
+    ->group(function () {
+        Route::post('/', [OrderController::class, 'store'])->name('.store');
     });

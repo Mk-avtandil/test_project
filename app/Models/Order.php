@@ -20,15 +20,13 @@ class Order extends Model implements Sortable
     use HasBlocks, HasSlug, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory;
 
     protected $fillable = [
-        'published',
-        'title',
-        'description',
-        'position',
         'user_id',
         'orderable_type',
         'orderable_id',
+        'quantity',
         'status',
-        'details'
+        'published',
+        'position',
     ];
 
     public $slugAttributes = [

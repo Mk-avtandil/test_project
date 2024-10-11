@@ -11,12 +11,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             // this will create an id, a "published" column, and soft delete and timestamps columns
             createDefaultTableFields($table);
-
             $table->foreignId('user_id')->constrained('users');
-            $table->morphs('orderable');
-            $table->string('status')->index();
-            $table->text('details')->nullable();
-
+            $table->unsignedBigInteger('orderable_id');
+            $table->string('orderable_type');
+            $table->integer('quantity')->default(1);
+            $table->enum('status', ['pending', 'completed']);
             $table->integer('position')->unsigned()->nullable();
 
             // add those 2 columns to enable publication timeframe fields (you can use publish_start_date only if you don't need to provide the ability to specify an end date)
