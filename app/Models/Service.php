@@ -39,5 +39,13 @@ class Service extends Model implements Sortable
         static::created(function ($service) {
             (new UpdateServiceCache())->handle($service);
         });
+
+        static::updated(function ($service) {
+            (new UpdateServiceCache())->handle($service);
+        });
+
+        static::deleted(function ($service) {
+            (new UpdateServiceCache())->handle($service);
+        });
     }
 }
