@@ -21,8 +21,8 @@ class OrderFactory extends Factory
             'orderable_type' => $this->faker->randomElement(['App\\Models\\Product', ]),
             'orderable_id' => $this->faker->numberBetween(1, 40),
             'status' => $this->faker->randomElement(['pending', 'completed']),
-            'details' => $this->faker->paragraph(),
-            'published' => true
+            'published' => true,
+            'quantity' => $this->faker->numberBetween(1, 10)
         ];
     }
 }
