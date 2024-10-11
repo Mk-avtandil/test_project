@@ -41,6 +41,14 @@ class Product extends Model implements Sortable
         static::created(function ($product) {
             (new UpdateProductCache())->handle($product);
         });
+
+        static::updated(function ($product) {
+            (new UpdateProductCache())->handle($product);
+        });
+
+        static::deleted(function ($product) {
+            (new UpdateProductCache())->handle($product);
+        });
     }
 
     public $mediasParams = [
