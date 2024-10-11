@@ -26,7 +26,7 @@ class Product extends Model implements Sortable
         'size',
         'type',
         'color',
-        'is_in_stock',
+        'quantity',
         'price'
     ];
 
