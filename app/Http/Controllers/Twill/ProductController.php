@@ -56,8 +56,11 @@ class ProductController extends BaseModuleController
                 ->type('number')
                 ->required()
                 ->label('Цена'),
-            Checkbox::make()
-                ->name('is_in_stock')
+            Input::make()
+                ->name('quantity')
+                ->label('Количество')
+                ->type('number')
+                ->required()
         ];
     }
 
@@ -99,8 +102,8 @@ class ProductController extends BaseModuleController
         );
 
         $table->add(
-            Text::make()->field('is_in_stock')->title('Is in stock')->customRender(function ($product) {
-                return $product->is_in_stock ? 'Yes' : 'No';
+            Text::make()->field('quantity')->title('Is in stock')->customRender(function ($product) {
+                return $product->quantity > 0 ? 'Yes' : 'No';
             })
         );
 

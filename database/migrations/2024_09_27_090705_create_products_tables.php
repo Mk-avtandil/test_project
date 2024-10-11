@@ -15,8 +15,8 @@ return new class extends Migration
             $table->string('type')->index();
             $table->string('color');
             $table->string('size');
-            $table->decimal('price', 8, 2); // цена с 2 знаками после запятой
-            $table->boolean('is_in_stock')->default(true);
+            $table->decimal('price');
+            $table->integer('quantity', false, true);
             $table->text('description')->nullable();
             $table->integer('position')->unsigned()->nullable();
 
