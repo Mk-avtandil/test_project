@@ -1,36 +1,39 @@
 <?php
 
 namespace App\Http\Requests;
-
-use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Validator;
-
 
 class OrderCreateRequest extends FormRequest
 {
     public function rules(): array
     {
         $orderable = $this->orderable_type::find($this->orderable_id);
-        return [
+        $rules = [
             'user_id' => ['required', 'exists:users,id'],
             'orderable_type' => ['required', 'string'],
             'orderable_id' => ['required', 'integer'],
 
             'status' => ['required', function ($attribute, $value, $fail) {
-            if (!in_array($value, ['pending', 'completed'])) {
-                    $fail("$attribute can be only pending or completed");
+                if (!in_array($value, ['pending', 'completed'])) {
+                    $fail("$attribute can be only completed or pending");
                 }
             }],
-
-            'quantity' => ['required', 'integer', function ($attribute, $value, $fail) use ($orderable) {
-                if ($orderable->quantity == 0) {
-                    $fail("The Product or Service '{$orderable->type}' is out of stock");
-                }
-                if ($value > $orderable->quantity) {
-                    $fail("The {$attribute} must be less than or equal to {$orderable->quantity}");
-                }
-            }],// TODO:: надо поменять для App\\Models\\Service
         ];
+        if ($orderable instanceof Product) {
+            $rules['quantity'] = [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) use ($orderable) {
+                    if ($orderable->quantity == 0) {
+                        $fail("The Product '{$orderable->type}' is out of stock");
+                    }
+                    if ($value > $orderable->quantity) {
+                        $fail("The {$attribute} must be less than or equal to {$orderable->quantity}");
+                    }
+                }];
+        }
+
+        return $rules;
     }
 }
