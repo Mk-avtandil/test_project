@@ -10,7 +10,6 @@ class OrderCreateRequest extends FormRequest
     {
         $orderable = $this->orderable_type::find($this->orderable_id);
         $rules = [
-            'user_id' => ['required', 'exists:users,id'],
             'orderable_type' => ['required', 'string'],
             'orderable_id' => ['required', 'integer'],
 

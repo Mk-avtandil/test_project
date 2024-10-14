@@ -8,6 +8,7 @@ use App\Http\Resources\OrderCollection;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class OrderController extends Controller
@@ -18,7 +19,10 @@ class OrderController extends Controller
 
         $orderable = $modelClass::findOrFail($request->orderable_id);
 
-        $order = $orderable->orders()->create($request->all());
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
+        $order = $orderable->orders()->create($validated);
+
 
         if ($orderable instanceof Product) {
             $orderable->quantity-=$request->quantity;
