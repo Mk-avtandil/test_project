@@ -27,6 +27,7 @@ Route::prefix('products')
     });
 
 Route::prefix('orders')
+//    ->middleware(['auth:sanctum'])
     ->name('order.')
     ->group(function () {
         Route::post('/', [OrderController::class, 'store'])->name('.store');

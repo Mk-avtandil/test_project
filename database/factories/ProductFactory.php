@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'color' => $this->faker->colorName(),
             'size' => $this->faker->randomFloat(),
             'price' => $this->faker->randomFloat(2, 100, 1000),
-            'quantity' => $this->faker->numberBetween(0, 10),
+            'quantity' => $this->faker->numberBetween(0, 20),
             'description' => $this->faker->text(),
             'published' => $this->faker->boolean(),
         ];

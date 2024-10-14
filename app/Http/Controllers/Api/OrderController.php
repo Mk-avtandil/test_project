@@ -17,18 +17,8 @@ class OrderController extends Controller
         $modelClass = $request->orderable_type === 'App\\Models\\Product' ? Product::class : Service::class;
 
         $orderable = $modelClass::findOrFail($request->orderable_id);
-        $validator = Validator::make($request->all(), [
-            'quantity' => [
-                'required',
-                'integer',
-                function (string $attribute, mixed $value, Closure $fail) use ($orderable) {
-                    if ($value > $orderable->quantity) {
-                        $fail("The {$attribute} is greater than product quantity.");
-                    }
-                },
-            ],
-        ]);
-        $validated = $validator->validated();
+
+        $validated = $request->validated();
         $validated['user_id'] = 1; // TODO:: needs to be changed when authorization works
 
         $order = $orderable->orders()->create($validated);
