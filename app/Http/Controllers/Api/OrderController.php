@@ -18,10 +18,9 @@ class OrderController extends Controller
 
         $orderable = $modelClass::findOrFail($request->orderable_id);
 
-        $validated = $request->validated();
-        $validated['user_id'] = 1; // TODO:: needs to be changed when authorization works
+        $request['user_id'] = 1; // TODO:: needs to be changed when authorization works
 
-        $order = $orderable->orders()->create($validated);
+        $order = $orderable->orders()->create($request->all());
 
         if ($orderable instanceof Product) {
             $orderable->quantity-=$request->quantity;

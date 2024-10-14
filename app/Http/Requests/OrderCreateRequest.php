@@ -18,7 +18,9 @@ class OrderCreateRequest extends FormRequest
             'orderable_id' => ['required', 'integer'],
 
             'status' => ['required', function ($attribute, $value, $fail) {
-                if (in_array($value, ['pending', 'completed'])) {}
+            if (!in_array($value, ['pending', 'completed'])) {
+                    $fail("$attribute can be only pending or completed");
+                }
             }],
 
             'quantity' => ['required', 'integer', function ($attribute, $value, $fail) use ($orderable) {
