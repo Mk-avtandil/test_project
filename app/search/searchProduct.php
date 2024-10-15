@@ -9,7 +9,7 @@ class searchProduct
 {
     public function get($request)
     {
-        $query = Product::query();
+        $query = Product::query()->with('comments');
 
         if ($request->has('type') && $request->type !== null) {
             $query->where('type', $request->type);

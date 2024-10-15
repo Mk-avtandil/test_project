@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
             'is_in_stock' => $this->is_in_stock,
             'description' => $this->description,
             'cover' => $this->image('cover', 'default') ?: null,
+            'comments' => $this->comments
         ];
     }
 }

@@ -34,6 +34,11 @@ class Product extends Model implements Sortable
         return $this->morphMany(Order::class, 'orderable');
     }
 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     protected static function boot(): void
     {
         parent::boot();
