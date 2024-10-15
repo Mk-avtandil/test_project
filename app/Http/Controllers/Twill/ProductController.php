@@ -39,7 +39,7 @@ class ProductController extends BaseModuleController
                 ->required()
                 ->maxLength(1000),
             Medias::make()
-                ->name('cover')
+                ->name('medias')
                 ->label('Images'),
             Input::make()
                 ->name('color')
@@ -109,8 +109,9 @@ class ProductController extends BaseModuleController
 
         $table->add(
             Text::make()->field('cover')->title('Images')->customRender(function ($product) {
-                $mediaUrl = $product->image('cover', 'default');
-                return $mediaUrl ? "<img src=\"{$mediaUrl}\" alt=\"Cover Image\" style=\"width: 100px;\" />" : 'No image';
+                $mediaUrl = $product->medias()->first()['uuid'];
+
+                return $mediaUrl ? "<img src=\"/storage/uploads/{$mediaUrl}\" alt=\"Cover Image\" style=\"width: 100px;\" />" : 'No image';
             })
         );
 
