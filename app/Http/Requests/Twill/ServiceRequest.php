@@ -8,11 +8,19 @@ class ServiceRequest extends Request
 {
     public function rulesForCreate()
     {
-        return [];
+        return [
+            'type' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'integer', 'min:1', 'max:10000000'],
+            'deadline' => ['required', 'date'],
+        ];
     }
 
     public function rulesForUpdate()
     {
-        return [];
+        return [
+            'type' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'integer', 'min:1', 'max:10000000'],
+            'deadline' => ['required', 'date'],
+        ];
     }
 }
