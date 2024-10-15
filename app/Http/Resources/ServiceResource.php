@@ -18,7 +18,8 @@ class ServiceResource extends JsonResource
             'type' => $this->type,
             'price' => $this->price,
             'deadline' => $this->deadline,
-            'example_link' => $this->example_link
+            'example_link' => $this->example_link,
+            'comments' => $this->comments,
         ];
     }
 }

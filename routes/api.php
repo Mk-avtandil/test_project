@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ServiceController;
@@ -32,4 +33,11 @@ Route::prefix('orders')
     ->group(function () {
         Route::post('/', [OrderController::class, 'store'])->name('.store');
         Route::get('/show', [OrderController::class, 'show'])->name('.show');
+    });
+
+Route::prefix('comments')
+    ->name('comment.')
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        Route::post('/', [CommentController::class, 'store'])->name('.store');
     });

@@ -18,7 +18,7 @@ class ServiceController extends Controller
     public function index(Request $request): ServiceCollection
     {
         $per_page = $request->get('per_page') ?? 25;
-        $services = Service::paginate($per_page);
+        $services = Service::with('comments')->paginate($per_page);
         return new ServiceCollection($services);
     }
 
@@ -33,7 +33,7 @@ class ServiceController extends Controller
     public function getAllServices(Request $request): ServiceCollection
     {
         $services = Cache::remember('all_services', 60, function () {
-            return Service::all();
+            return Service::with('comments')->get();
         });
 
         return new ServiceCollection($services);
