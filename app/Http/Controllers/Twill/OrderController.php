@@ -5,24 +5,18 @@ namespace App\Http\Controllers\Twill;
 use A17\Twill\Models\Contracts\TwillModelContract;
 use A17\Twill\Services\Breadcrumbs\BreadcrumbItem;
 use A17\Twill\Services\Breadcrumbs\Breadcrumbs;
-use A17\Twill\Services\Forms\Fields\Radios;
 use A17\Twill\Services\Forms\Fields\Select;
-use A17\Twill\Services\Forms\Option;
-use A17\Twill\Services\Forms\Options;
 use A17\Twill\Services\Listings\TableColumns;
 use A17\Twill\Services\Listings\Columns\Text;
 use A17\Twill\Services\Forms\Fields\Input;
 use A17\Twill\Services\Forms\Form;
 use A17\Twill\Http\Controllers\Admin\ModuleController as BaseModuleController;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\Service;
+
 use App\Models\User;
 
 class OrderController extends BaseModuleController
 {
     protected $moduleName = 'orders';
-
     protected $titleColumnKey = 'status';
     protected $titleColumnLabel = 'Status';
     protected $titleFormKey = 'status';
@@ -165,7 +159,6 @@ class OrderController extends BaseModuleController
                 );
             }
         }
-
         return $form;
     }
 
