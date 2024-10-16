@@ -17,8 +17,8 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'productOrServiceType' => $this->orderable_type,
-            'productOrService' => $this->orderable,
+            'orderable_type' => $this->orderable_type,
+            'orderable_id' => $this->orderable,
             'quantity' => $this->quantity,
             'status' => $this->status
         ];

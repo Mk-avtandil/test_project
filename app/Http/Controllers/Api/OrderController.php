@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderCreateRequest;
 use App\Http\Resources\OrderCollection;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Service;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+
 
 class OrderController extends Controller
 {
@@ -18,7 +20,7 @@ class OrderController extends Controller
 
 
         $request['user_id'] = auth()->id();
-        $order = $orderable->orders()->create($request);
+        $order = $orderable->orders()->create($request->all());
 
         if ($orderable instanceof Product) {
             $orderable->quantity-=$request->quantity;
@@ -29,7 +31,7 @@ class OrderController extends Controller
     }
 
 
-    public function show(Request $request)
+    public function index()
     {
         $user = auth()->user();
 
@@ -42,5 +44,15 @@ class OrderController extends Controller
             ->get();
 
         return new OrderCollection($orders);
+    }
+
+    public function show(Order $order) {
+        return new OrderResource(Order::find($order->id));
+    }
+
+    public function update(Request $request, Order $order) {
+        $order->update($request->all());
+        $order->save();
+        return response()->json(['order' => $order]);
     }
 }
