@@ -72,12 +72,6 @@ class OrderController extends BaseModuleController
                     ->options([ $user->id => $user->email])
             );
 
-            $form->add(
-                Input::make()
-                    ->name('orderable_type')
-                    ->label('Order Type')
-                    ->readOnly()
-            );
 
             $form->add(
                 Input::make()
@@ -93,11 +87,13 @@ class OrderController extends BaseModuleController
                     ->readOnly()
             );
 
+            $type = $model->orderable_type == 'App\\Models\\Product' ? 'Product' : 'Service';
+            $type .= ' (type)';
             $form->add(
                 Select::make()
                     ->name('orderable_id')
                     ->disabled()
-                    ->label('Type')
+                    ->label($type)
                     ->options([$items['id'] => $items['type']])
             );
 
