@@ -109,9 +109,11 @@ class ProductController extends BaseModuleController
 
         $table->add(
             Text::make()->field('cover')->title('Images')->customRender(function ($product) {
-                $mediaUrl = $product->medias()->first()['uuid'];
+                $mediaUrl = $product->medias()->get()->isNotEmpty()
+                    ? "/storage/uploads/" . $product->medias()->first()['uuid']
+                    : "/default.png";
 
-                return $mediaUrl ? "<img src=\"/storage/uploads/{$mediaUrl}\" alt=\"Cover Image\" style=\"width: 100px;\" />" : 'No image';
+                return $mediaUrl ? "<img src=\"{$mediaUrl}\" alt=\"{$product->type}\" style=\"width: 100px;\" />" : 'No image';
             })
         );
 
