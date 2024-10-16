@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class CheckQuantity implements ValidationRule
 {
     private $orderable;
-    public function __construct(mixed $orderable){
+    public function __construct(mixed $orderable) {
         $this->orderable = $orderable;
     }
 

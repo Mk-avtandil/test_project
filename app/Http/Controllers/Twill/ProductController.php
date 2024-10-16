@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Twill;
 
 use A17\Twill\Models\Contracts\TwillModelContract;
-use A17\Twill\Services\Forms\Fields\Checkbox;
 use A17\Twill\Services\Forms\Fields\Medias;
 use A17\Twill\Services\Forms\Fields\Wysiwyg;
 use A17\Twill\Services\Listings\Columns\Text;

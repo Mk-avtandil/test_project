@@ -8,13 +8,13 @@ use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
-
 class OrderController extends Controller
 {
-    public function store(OrderCreateRequest $request)
+    public function store(OrderCreateRequest $request): JsonResponse
     {
         $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
 
@@ -30,8 +30,7 @@ class OrderController extends Controller
         return response()->json(['message' => 'Заказ успешно создан', 'order' => $order, 'orderable' => $orderable], 201);
     }
 
-
-    public function index()
+    public function index(): OrderCollection|JsonResponse
     {
         $user = auth()->user();
 
@@ -46,11 +45,13 @@ class OrderController extends Controller
         return new OrderCollection($orders);
     }
 
-    public function show(Order $order) {
+    public function show(Order $order)
+    {
         return new OrderResource(Order::find($order->id));
     }
 
-    public function update(Request $request, Order $order) {
+    public function update(Request $request, Order $order) 
+    {
         $order->update($request->all());
         $order->save();
         return response()->json(['order' => $order]);
