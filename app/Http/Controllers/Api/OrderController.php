@@ -7,12 +7,12 @@ use App\Http\Requests\OrderCreateRequest;
 use App\Http\Resources\OrderCollection;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Service;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Request;
 
 class OrderController extends Controller
 {
-    public function store(OrderCreateRequest $request)
+    public function store(OrderCreateRequest $request): JsonResponse
     {
         $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
 
@@ -29,7 +29,7 @@ class OrderController extends Controller
     }
 
 
-    public function show(Request $request)
+    public function show(Request $request): OrderCollection|JsonResponse
     {
         $user = auth()->user();
 

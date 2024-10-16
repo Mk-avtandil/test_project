@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Requests;
+
 use App\Models\Order;
-use App\Models\Product;
 use App\Rules\CheckQuantity;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class OrderCreateRequest extends FormRequest

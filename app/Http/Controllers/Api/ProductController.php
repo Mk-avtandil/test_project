@@ -7,15 +7,16 @@ use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Product;
-use App\search\searchProduct;
+use App\Search\SearchProduct;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index(Request $request): ProductCollection
     {
-        $products = new searchProduct();
-        $result = $products->get($request);
+        $products = new SearchProduct();
+        $paramsForSearch = $this->filterParams($request);
+        $result = $products->get($paramsForSearch);
 
         return new ProductCollection($result);
     }
@@ -34,5 +35,16 @@ class ProductController extends Controller
         return new ProductCollection($products);
     }
 
-
+    private function filterParams($request): array
+    {
+        return [
+            'type' => $request->get('type'),
+            'price_from' => $request->get('price_from'),
+            'price_to' => $request->get('price_to'),
+            'color' => $request->get('color'),
+            'size' => $request->get('size'),
+            'quantity' => $request->get('quantity'),
+            'per_page' => $request->get('per_page'),
+        ];
+    }
 }

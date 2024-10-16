@@ -13,6 +13,7 @@ use A17\Twill\Models\Behaviors\Sortable;
 use App\Listeners\UpdateServiceCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Service extends Model implements Sortable
 {
@@ -27,12 +28,12 @@ class Service extends Model implements Sortable
         'example_link'
     ];
 
-    public function orders()
+    public function orders(): MorphMany
     {
         return $this->morphMany(Order::class, 'orderable');
     }
 
-    public function comments()
+    public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
