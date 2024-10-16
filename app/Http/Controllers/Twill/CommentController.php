@@ -74,14 +74,15 @@ class CommentController extends BaseModuleController
 
         $table->add(
             Text::make()->field('user_id')->title('USER')->customRender(function ($comment) {
-                $user = User::find($comment->user_id);
-                return $user ? $user->name : 'Unknown';
+                return $comment->user ? $comment->user->name : 'Unknown';
             }),
         );
 
         $table->add(
             Text::make()->field('commentable_type')->title('Product/Service')->customRender(function ($comment) {
-                return $comment ? $comment->commentable_type : 'Unknown';
+                $type = explode('\\', $comment->commentable_type);
+                $type = end($type);
+                return "$type: " . $comment->commentable->type;
             })
         );
 

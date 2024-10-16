@@ -17,7 +17,13 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => $this->faker->numberBetween(1, 11),
+            'body' => $this->faker->realText(),
+            'commentable_id' => $this->faker->numberBetween(1, 40),
+            'commentable_type' => $this->faker->randomElement([
+                'App\\Models\\Product',
+                'App\\Models\\Service'
+            ]),
         ];
     }
 }

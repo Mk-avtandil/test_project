@@ -178,7 +178,9 @@ class OrderController extends BaseModuleController
 
         $table->add(
             Text::make()->field('orderable_type')->title('Product/Service')->customRender(function ($order) {
-                return $order ? $order->orderable_type : 'Unknown';
+                $type = explode('\\', $order->orderable_type);
+                $type = end($type);
+                return "$type: " . $order->orderable->type;
             })
         );
 
