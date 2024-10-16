@@ -18,6 +18,8 @@ class Order extends Model implements Sortable
 {
     use HasBlocks, HasSlug, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory;
 
+    const STATUSES = ['pending', 'completed'];
+
     protected $fillable = [
         'user_id',
         'orderable_type',

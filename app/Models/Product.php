@@ -8,6 +8,7 @@ use A17\Twill\Models\Behaviors\HasFiles;
 use A17\Twill\Models\Behaviors\HasRevisions;
 use A17\Twill\Models\Behaviors\HasPosition;
 use A17\Twill\Models\Behaviors\Sortable;
+use A17\Twill\Repositories\Behaviors\HandleRevisions;
 use App\Listeners\UpdateProductCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Product extends Model implements Sortable
 {
-    use HasBlocks, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory;
+    use HasBlocks, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory, HandleRevisions;
 
     protected $fillable = [
         'published',

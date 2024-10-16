@@ -14,19 +14,15 @@ class OrderController extends Controller
 {
     public function store(OrderCreateRequest $request)
     {
-        $modelClass = $request->orderable_type === 'App\\Models\\Product' ? Product::class : Service::class;
+        $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
 
-        $orderable = $modelClass::findOrFail($request->orderable_id);
 
-        $validated = $request->validated();
-        $validated['user_id'] = auth()->id();
-        $order = $orderable->orders()->create($validated);
-
+        $request['user_id'] = auth()->id();
+        $order = $orderable->orders()->create($request);
 
         if ($orderable instanceof Product) {
             $orderable->quantity-=$request->quantity;
         }
-
         $orderable->save();
 
         return response()->json(['message' => 'Заказ успешно создан', 'order' => $order, 'orderable' => $orderable], 201);

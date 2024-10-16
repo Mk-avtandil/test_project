@@ -1,38 +1,30 @@
 <?php
 
 namespace App\Http\Requests;
+use App\Models\Order;
 use App\Models\Product;
+use App\Rules\CheckQuantity;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OrderCreateRequest extends FormRequest
 {
     public function rules(): array
     {
         $orderable = $this->orderable_type::find($this->orderable_id);
-        $rules = [
+
+        return [
             'orderable_type' => ['required', 'string'],
             'orderable_id' => ['required', 'integer'],
 
-            'status' => ['required', function ($attribute, $value, $fail) {
-                if (!in_array($value, ['pending', 'completed'])) {
-                    $fail("$attribute can be only completed or pending");
-                }
-            }],
-        ];
-        if ($orderable instanceof Product) {
-            $rules['quantity'] = [
+            'status' => ['required', Rule::in(Order::STATUSES)],
+            'quantity' => [
+                Rule::excludeIf($this->orderable_type !== 'App\\Models\\Product'),
                 'required',
                 'integer',
-                function ($attribute, $value, $fail) use ($orderable) {
-                    if ($orderable->quantity == 0) {
-                        $fail("The Product '{$orderable->type}' is out of stock");
-                    }
-                    if ($value > $orderable->quantity) {
-                        $fail("The {$attribute} must be less than or equal to {$orderable->quantity}");
-                    }
-                }];
-        }
-
-        return $rules;
+                new CheckQuantity($orderable)
+            ]
+        ];
     }
 }
