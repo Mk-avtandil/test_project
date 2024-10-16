@@ -9,7 +9,6 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
-use App\Models\Service;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -17,7 +16,6 @@ class OrderController extends Controller
     public function store(OrderCreateRequest $request): JsonResponse
     {
         $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
-
 
         $request['user_id'] = auth()->id();
         $order = $orderable->orders()->create($request->all());
@@ -45,12 +43,12 @@ class OrderController extends Controller
         return new OrderCollection($orders);
     }
 
-    public function show(Order $order)
+    public function show(Order $order): OrderResource
     {
         return new OrderResource(Order::find($order->id));
     }
 
-    public function update(Request $request, Order $order) 
+    public function update(Request $request, Order $order): JsonResponse
     {
         $order->update($request->all());
         $order->save();

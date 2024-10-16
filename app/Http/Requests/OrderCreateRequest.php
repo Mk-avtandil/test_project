@@ -16,7 +16,6 @@ class OrderCreateRequest extends FormRequest
         return [
             'orderable_type' => ['required', 'string'],
             'orderable_id' => ['required', 'integer'],
-
             'status' => ['required', Rule::in(Order::STATUSES)],
             'quantity' => [
                 Rule::excludeIf($this->orderable_type !== 'App\\Models\\Product'),

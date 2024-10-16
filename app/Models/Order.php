@@ -21,6 +21,7 @@ class Order extends Model implements Sortable
     const STATUSES = ['pending', 'completed'];
 
     protected $fillable = [
+        'user_id',
         'orderable_type',
         'orderable_id',
         'quantity',
