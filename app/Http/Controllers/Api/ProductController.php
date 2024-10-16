@@ -27,7 +27,7 @@ class ProductController extends Controller
 
     public function getAllProducts(Request $request): ProductCollection
     {
-        $products = Cache::remember('all_products', 60, function () {
+        $products = Cache::rememberForever('all_products', function () {
             return Product::with('comments')->get();
         });
 
