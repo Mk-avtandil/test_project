@@ -32,12 +32,14 @@ Route::prefix('orders')
     ->name('order.')
     ->group(function () {
         Route::post('/', [OrderController::class, 'store'])->name('.store');
-        Route::get('/show', [OrderController::class, 'show'])->name('.show');
+        Route::get('/', [OrderController::class, 'index'])->name('.index');
+        Route::get('/{order}', [OrderController::class, 'show'])->name('.show');
+        Route::put('/{order}', [OrderController::class, 'update'])->name('.update');
     });
 
 Route::prefix('comments')
-    ->name('comment.')
     ->middleware(['auth:sanctum'])
+    ->name('comment.')
     ->group(function () {
         Route::post('/', [CommentController::class, 'store'])->name('.store');
     });
