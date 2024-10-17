@@ -1,9 +1,13 @@
 <?php
 
 return [
-//    'enabled' => [
-//        'users-2fa' => true,
-//    ],
+    'enabled' => [
+        'permissions-management' => true
+    ],
+    'permissions' => [
+        'level' => \A17\Twill\Enums\PermissionLevel::LEVEL_ROLE,
+        'modules' => ['products', 'services', 'orders', 'comments'],
+    ],
     'media_library' => [
         'disk' => 'twill_media_library',
         'endpoint_type' => env('MEDIA_LIBRARY_ENDPOINT_TYPE', 'local'),
