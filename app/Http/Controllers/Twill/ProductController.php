@@ -26,6 +26,7 @@ class ProductController extends BaseModuleController
     protected function setUpController(): void
     {
         $this->disablePermalink();
+        $this->enableSkipCreateModal();
         self::$formFields = [
             Input::make()
                 ->name('type')
@@ -76,11 +77,6 @@ class ProductController extends BaseModuleController
         }
 
         return $form;
-    }
-
-    public function getCreateForm(): Form
-    {
-        return Form::make(self::$formFields);
     }
 
     /**
