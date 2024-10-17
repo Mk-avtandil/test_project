@@ -13,6 +13,7 @@ use Database\Factories\CommentFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -59,5 +60,15 @@ class DatabaseSeeder extends Seeder
         }
 
         Comment::factory()->count(80)->create();
+
+        DB::table('twill_users')->insert([
+            'published' => 1,
+            'created_at' => now(),
+            'name' => 'Test Admin',
+            'email' => 'test@gmail.com',
+            'role' => 'SUPERADMIN',
+            'password' => Hash::make('password'),
+            'registered_at' => now(),
+        ]);
     }
 }
