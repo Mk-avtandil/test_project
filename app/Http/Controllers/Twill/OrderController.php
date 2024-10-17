@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Twill;
 use A17\Twill\Models\Contracts\TwillModelContract;
 use A17\Twill\Services\Breadcrumbs\BreadcrumbItem;
 use A17\Twill\Services\Breadcrumbs\Breadcrumbs;
+use A17\Twill\Services\Forms\BladePartial;
 use A17\Twill\Services\Forms\Fields\Select;
 use A17\Twill\Services\Listings\TableColumns;
 use A17\Twill\Services\Listings\Columns\Text;
@@ -21,7 +22,6 @@ class OrderController extends BaseModuleController
     protected $titleColumnLabel = 'Status';
     protected $titleFormKey = 'status';
     protected $titleFormLabel = 'Status';
-    private static array $fields;
 
     /**
      * This method can be used to enable/disable defaults. See setUpController in the docs for available options.
@@ -52,109 +52,17 @@ class OrderController extends BaseModuleController
     {
         $form = new Form();
 
-        if ($model->exists) {
-            $user = User::find($model->user_id);
-            $items = $model->orderable->toArray();
+        $type = explode('\\', 'App\\Models\\Product')[2];
+        $params = [
+            'type' => $type,
+            'model' => $model,
+        ];
+        if($type === 'Product') {
+            $params['media_url'] = $model->orderable?->medias()?->first();
 
-            $form->add(
-                Select::make()
-                ->name('user_id')
-                ->label('User')
-                ->disabled()
-                ->options([ $user->id => $user->name])
-            );
-
-            $form->add(
-                Select::make()
-                    ->name('user_id')
-                    ->label('Email')
-                    ->disabled()
-                    ->options([ $user->id => $user->email])
-            );
-
-
-            $form->add(
-                Input::make()
-                    ->name('status')
-                    ->label('Status')
-                    ->readOnly()
-            );
-
-            $form->add(
-                Input::make()
-                    ->name('quantity')
-                    ->label('Quantity')
-                    ->readOnly()
-            );
-
-            $type = $model->orderable_type == 'App\\Models\\Product' ? 'Product' : 'Service';
-            $type .= ' (type)';
-            $form->add(
-                Select::make()
-                    ->name('orderable_id')
-                    ->disabled()
-                    ->label($type)
-                    ->options([$items['id'] => $items['type']])
-            );
-
-            $form->add(
-                Select::make()
-                    ->name('orderable_id')
-                    ->disabled()
-                    ->label('Price')
-                    ->options([$items['id'] => $items['price']])
-            );
-
-            if (isset($items['color'])) {
-                $form->add(
-                    Select::make()
-                        ->name('orderable_id')
-                        ->disabled()
-                        ->label('Color')
-                        ->options([$items['id'] => $items['color']])
-                );
-            }
-
-            if (isset($items['size'])) {
-                $form->add(
-                    Select::make()
-                        ->name('orderable_id')
-                        ->disabled()
-                        ->label('Size')
-                        ->options([$items['id'] => $items['size']])
-                );
-            }
-
-            if (isset($items['is_in_stock'])) {
-                $form->add(
-                    Select::make()
-                        ->name('orderable_id')
-                        ->disabled()
-                        ->label('Is in stock')
-                        ->options([$items['id'] => $items['is_in_stock']])
-                );
-            }
-
-            if (isset($items['description'])) {
-                $form->add(
-                    Select::make()
-                        ->name('orderable_id')
-                        ->disabled()
-                        ->label('Description')
-                        ->options([$items['id'] => $items['description']])
-                );
-            }
-
-            if (isset($items['deadline'])) {
-                $form->add(
-                    Select::make()
-                        ->name('orderable_id')
-                        ->disabled()
-                        ->label('Deadline')
-                        ->options([$items['id'] => $items['deadline']])
-                );
-            }
         }
+
+        $form->add(BladePartial::make()->view('new-form')->withAdditionalParams($params));
         return $form;
     }
 
@@ -189,5 +97,3 @@ class OrderController extends BaseModuleController
         return $table;
     }
 }
-
-

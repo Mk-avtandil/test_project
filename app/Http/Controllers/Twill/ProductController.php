@@ -38,7 +38,7 @@ class ProductController extends BaseModuleController
                 ->required()
                 ->maxLength(1000),
             Medias::make()
-                ->name('medias')
+                ->name('cover')
                 ->label('Images'),
             Input::make()
                 ->name('color')
