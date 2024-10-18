@@ -17,6 +17,7 @@ class ServiceController extends BaseModuleController
     protected $titleColumnLabel = 'Type';
     protected $titleFormKey = 'type';
     protected $titleFormLabel = 'Type';
+    protected $previewView = 'site.service';
 
     private static array $formFields;
     /**

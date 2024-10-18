@@ -9,6 +9,7 @@ use A17\Twill\Models\Behaviors\HasFiles;
 use A17\Twill\Models\Behaviors\HasRevisions;
 use A17\Twill\Models\Behaviors\HasPosition;
 use A17\Twill\Models\Behaviors\Sortable;
+use App\Events\OrderPlaced;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,5 +43,12 @@ class Order extends Model implements Sortable
     public function orderable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($order) {
+            event(new OrderPlaced($order));
+        });
     }
 }

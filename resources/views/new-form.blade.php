@@ -5,13 +5,12 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Order</title>
 </head>
 <body>
 @if($type==='Product')
     <div style="margin:40px">
-        @if($type==='Product') <img src="{{'/storage/uploads/' . $media_url?->uuid}}" alt="{{$model->orderable->type}} IMG"> @endif
-
+        <img width="300px" src="{{'/storage/uploads/' . $media_url?->uuid}}" alt="{{$model->orderable->type}} IMG">
     </div>
 @endif
 <table style="margin:40px;">
