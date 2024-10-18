@@ -10,7 +10,8 @@
 <body>
 @if($type==='Product')
     <div style="margin:40px">
-        <img src="{{'/storage/uploads/' . $media_url?->uuid}}" alt="{{$model->orderable->type}} IMG">
+        @if($type==='Product') <img src="{{'/storage/uploads/' . $media_url?->uuid}}" alt="{{$model->orderable->type}} IMG"> @endif
+
     </div>
 @endif
 <table style="margin:40px;">

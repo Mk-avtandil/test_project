@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +32,8 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
 
             Auth::login($user);
+
+            $user->notify(new WelcomeNotification());
 
             return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
         } catch (\Exception $e) {
