@@ -18,6 +18,7 @@ class ProductController extends BaseModuleController
     protected $titleColumnLabel = 'Type';
     protected $titleFormKey = 'type';
     protected $titleFormLabel = 'Type';
+    protected $previewView = 'site.product';
 
     private static array $formFields;
     /**

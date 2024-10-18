@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderCreateRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -48,10 +48,11 @@ class OrderController extends Controller
         return new OrderResource(Order::find($order->id));
     }
 
-    public function update(Request $request, Order $order): JsonResponse
+    public function update(OrderUpdateRequest $request, Order $order): JsonResponse
     {
-        $order->update($request->all());
-        $order->save();
+        $order->update([
+            'status' => $request->get('status'),
+        ]);
         return response()->json(['order' => $order]);
     }
 }

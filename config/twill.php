@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'frontend' => [
+        'views_path' => 'site',
+    ],
     'enabled' => [
         'permissions-management' => true
     ],
