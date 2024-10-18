@@ -9,6 +9,7 @@ use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
+use App\Notifications\OrderSuccessful;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
@@ -24,6 +25,7 @@ class OrderController extends Controller
             $orderable->quantity-=$request->quantity;
         }
         $orderable->save();
+        auth()->user()->notify(new OrderSuccessful($order));
 
         return response()->json(['message' => 'Заказ успешно создан', 'order' => $order, 'orderable' => $orderable], 201);
     }

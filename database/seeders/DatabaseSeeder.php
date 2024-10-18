@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'name' => 'Test Admin',
             'email' => 'test@gmail.com',
-            'role' => 'SUPERADMIN',
+            'is_superadmin' => 1,
             'password' => Hash::make('password'),
             'registered_at' => now(),
         ]);
