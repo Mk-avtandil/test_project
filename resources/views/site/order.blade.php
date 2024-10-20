@@ -14,7 +14,7 @@
     <tbody>
     <tr>
         <td rowspan="8" style="padding-right: 20px;">
-            <img width="200px" src="{{'/storage/uploads/' . $item->orderable->medias()->first()?->uuid}}" alt="{{$item->orderable->type}}">
+            <img width="200px" src="{{'./storage/uploads/' . $item->orderable->medias()->first()?->uuid}}" alt="{{$item->orderable->type}}">
         </td>
         <td>User: </td>
         <td>{{ $item->user_id }}</td>

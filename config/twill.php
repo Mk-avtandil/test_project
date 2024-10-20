@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'dashboard' => [
+        'auth_activity_log' => [
+            'login' => true,
+            'logout' => true
+        ],
+    ],
     'frontend' => [
         'views_path' => 'site',
     ],

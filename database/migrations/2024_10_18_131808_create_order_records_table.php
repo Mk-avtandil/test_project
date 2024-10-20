@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('email');
+            $table->string('user_ip');
+            $table->string('device_name');
             $table->string('product_name');
-            $table->string('quantity');
-            $table->string('price');
-            $table->string('total_price');
+            $table->integer('quantity');
+            $table->string('status');
+            $table->integer('price');
+            $table->integer('total_price');
             $table->timestamps();
         });
     }
