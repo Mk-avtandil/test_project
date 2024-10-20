@@ -38,9 +38,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $orders = Order::where('user_id', $user->id)
-            ->with('orderable', 'user')
-            ->get();
+        $orders = Order::where('user_id', $user->id)->with('orderable', 'user')->get();
 
         return new OrderCollection($orders);
     }
@@ -55,6 +53,7 @@ class OrderController extends Controller
         $order->update([
             'status' => $request->get('status'),
         ]);
+
         return response()->json(['order' => $order]);
     }
 }

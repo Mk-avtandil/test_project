@@ -50,5 +50,9 @@ class Order extends Model implements Sortable
         static::created(function ($order) {
             event(new OrderPlaced($order));
         });
+
+        static::updated(function ($order) {
+            event(new OrderPlaced($order));
+        });
     }
 }
