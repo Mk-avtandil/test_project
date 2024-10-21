@@ -53,6 +53,8 @@ class Product extends Model implements Sortable
         });
 
         static::deleted(function ($product) {
+            $product->orders()->delete();
+
             (new UpdateProductCache())->handle($product);
         });
     }
