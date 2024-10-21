@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
+use App\Mail\RegistrationSuccessfulMail;
 use App\Models\User;
-use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 
 class RegisteredUserController extends Controller
@@ -33,7 +34,7 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            $user->notify(new WelcomeNotification());
+            Mail::to($user)->sendNow(new RegistrationSuccessfulMail($user));
 
             return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
         } catch (\Exception $e) {
