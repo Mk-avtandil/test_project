@@ -36,5 +36,4 @@ class SearchProduct
 
         return $query->paginate($search['per_page'] ?? 25);
     }
-
 }

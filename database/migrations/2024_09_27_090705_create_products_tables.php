@@ -14,7 +14,7 @@ return new class extends Migration
 
             $table->string('type')->index();
             $table->string('color');
-            $table->string('size');
+            $table->integer('size');
             $table->decimal('price');
             $table->integer('quantity', false, true);
             $table->text('description')->nullable();

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
-use App\Http\Resources\ProductResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Product;
 use App\Search\SearchProduct;
@@ -21,9 +21,15 @@ class ProductController extends Controller
         return new ProductCollection($result);
     }
 
-    public function show(Product $product)
+    public function show($id)
     {
-        return new ProductResource($product);
+        try {
+            $product = Product::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        return response()->json(['data' => $product], 200);
     }
 
     public function getAllProducts(Request $request): ProductCollection
