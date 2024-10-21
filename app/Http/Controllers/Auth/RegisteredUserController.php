@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            Mail::to($user)->sendNow(new RegistrationSuccessfulMail($user));
+            Mail::to($user)->send(new RegistrationSuccessfulMail($user));
 
             return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
         } catch (\Exception $e) {

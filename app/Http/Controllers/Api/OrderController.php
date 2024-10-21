@@ -10,7 +10,6 @@ use App\Http\Resources\OrderResource;
 use App\Mail\OrderSuccessfulMail;
 use App\Models\Order;
 use App\Models\Product;
-use App\Notifications\OrderSuccessful;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
@@ -28,7 +27,7 @@ class OrderController extends Controller
         }
         $orderable->save();
 
-        Mail::to(auth()->user())->sendNow(new OrderSuccessfulMail(auth()->user(), $order));
+        Mail::to(auth()->user())->send(new OrderSuccessfulMail(auth()->user(), $order));
 
         return response()->json(['message' => 'Заказ успешно создан', 'order' => $order, 'orderable' => $orderable], 201);
     }

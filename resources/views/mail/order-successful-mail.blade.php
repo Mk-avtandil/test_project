@@ -1,13 +1,13 @@
-<style>
-    td {
-        padding: 5px;
+<style rel="text/css">
+    .styled-table td {
+        width: 30px;
     }
 </style>
 <div>
-    <h1>Dear, {{$user->name}}</h1>
+    <h4>Dear, {{$user->name}}</h4>
     <p>You have successfully ordered <a href="{{route('product.show', ['product' => $order->orderable])}}">{{$order->orderable->type}}</a></p>
     <br>
-    <table style="padding: 20px">
+    <table class="styled-table">
         <thead>
             <tr>
                 <td>Quantity</td>

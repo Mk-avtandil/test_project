@@ -14,6 +14,10 @@ class RegistrationSuccessfulMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $tries = 5;
+
+    public int $timeout = 120;
+
     /**
      * Create a new message instance.
      */

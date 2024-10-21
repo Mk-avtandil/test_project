@@ -1,12 +1,9 @@
-<x-mail::message>
-# Hello, {{auth()->user()->name}} Welcome to Test Project
+<div>
 
-You have successfully registered in our <a href="{{route('product.index')}}">Test Project Website</a>
+    # Hello, {{$user->name}} Welcome to Test Project
 
-<x-mail::button :url="''">
-Please Verify Your Email
-</x-mail::button>
+    You have successfully registered in our <a href="{{route('product.index')}}">Test Project Website</a>
 
-Thanks,<br>
-{{ config('app.name') }}
-</x-mail::message>
+    Thanks,<br>
+    {{ config('app.name') }}
+</div>
