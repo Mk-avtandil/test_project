@@ -11,7 +11,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('/services')
+Route::prefix('services')
     ->name('service.')
     ->group(function () {
         Route::get('/', [ServiceController::class, 'index'])->name('index');
@@ -33,7 +33,6 @@ Route::prefix('orders')
     ->group(function () {
         Route::post('/', [OrderController::class, 'store'])->name('store');
         Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
         Route::put('/{order}', [OrderController::class, 'update'])->name('update');
     });
 

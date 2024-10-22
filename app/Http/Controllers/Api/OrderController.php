@@ -45,10 +45,6 @@ class OrderController extends Controller
         return new OrderCollection($orders);
     }
 
-    public function show(Order $order): OrderResource
-    {
-        return new OrderResource(Order::find($order->id));
-    }
 
     public function update(OrderUpdateRequest $request, Order $order): JsonResponse
     {

@@ -8,7 +8,7 @@ class SearchProduct
 {
     public function get($search)
     {
-        $query = Product::query()->with('comments');
+        $query = Product::query()->with(['comments', 'medias']);
 
         if (!empty($search['type'])) {
             $query->where('type', $search['type']);
