@@ -52,6 +52,7 @@ class Service extends Model implements Sortable
 
         static::deleted(function ($service) {
             $service->orders()->delete();
+            $service->comments()->delete();
 
             (new UpdateServiceCache())->handle($service);
         });
