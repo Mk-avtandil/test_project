@@ -11,7 +11,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('/services')
+Route::prefix('services')
     ->name('service.')
     ->group(function () {
         Route::get('/', [ServiceController::class, 'index'])->name('index');

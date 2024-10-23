@@ -45,7 +45,7 @@ class Order extends Model implements Sortable
         return $this->morphTo();
     }
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::created(function ($order) {
             event(new OrderPlaced($order));

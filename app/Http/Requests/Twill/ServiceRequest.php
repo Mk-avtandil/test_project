@@ -10,7 +10,7 @@ class ServiceRequest extends Request
     {
         return [
             'type' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'integer', 'min:1', 'max:10000000'],
+            'price' => ['required', 'numeric', 'min:1', 'max:10000000'],
             'deadline' => ['required', 'date'],
         ];
     }
@@ -19,7 +19,7 @@ class ServiceRequest extends Request
     {
         return [
             'type' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'integer', 'min:1', 'max:10000000'],
+            'price' => ['required', 'numeric', 'min:1', 'max:10000000'],
             'deadline' => ['required', 'date'],
         ];
     }
