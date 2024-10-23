@@ -16,7 +16,7 @@ Route::prefix('services')
     ->group(function () {
         Route::get('/', [ServiceController::class, 'index'])->name('index');
         Route::get('/all', [ServiceController::class, 'getAllServices'])->name('getAllServices');
-        Route::get('/{service}', [ServiceController::class, 'show'])->name('show');
+        Route::get('/{id}', [ServiceController::class, 'show'])->name('show');
     });
 
 Route::prefix('products')

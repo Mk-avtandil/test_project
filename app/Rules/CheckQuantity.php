@@ -20,9 +20,9 @@ class CheckQuantity implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($this->orderable->quantity == 0) {
-            $fail("The Product '{$this->orderable->type}' is out of stock");
-        } elseif ($value > $this->orderable->quantity) {
+        if ($this->orderable?->quantity === 0) {
+            $fail("The Product '{$this->orderable?->type}' is out of stock");
+        } elseif ($value > $this->orderable?->quantity) {
             $fail("The {$attribute} must be less than or equal to {$this?->orderable?->quantity}");
         }
     }

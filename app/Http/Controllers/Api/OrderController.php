@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderCreateRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Resources\OrderCollection;
-use App\Http\Resources\OrderResource;
 use App\Mail\OrderSuccessfulMail;
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,9 +17,14 @@ class OrderController extends Controller
 {
     public function store(OrderCreateRequest $request): JsonResponse
     {
-        $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
+        try {
+            $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Product or Service not found'], 404);
+        }
 
         $request['user_id'] = auth()->id();
+
         $order = $orderable->orders()->create($request->all());
 
         if ($orderable instanceof Product) {
@@ -44,7 +49,6 @@ class OrderController extends Controller
 
         return new OrderCollection($orders);
     }
-
 
     public function update(OrderUpdateRequest $request, Order $order): JsonResponse
     {

@@ -122,7 +122,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function test_cannot_get_filtered_product_by_non_matching_size()
+    public function test_can_not_get_filtered_product_by_non_matching_size()
     {
         Product::factory()->create([
             'type' => 'test data',
