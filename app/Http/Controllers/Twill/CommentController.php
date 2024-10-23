@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Twill;
 
 use A17\Twill\Models\Contracts\TwillModelContract;
+use A17\Twill\Services\Forms\BladePartial;
 use A17\Twill\Services\Forms\Fields\Select;
 use A17\Twill\Services\Listings\TableColumns;
 use A17\Twill\Services\Listings\Columns\Text;
@@ -35,30 +36,12 @@ class CommentController extends BaseModuleController
         $form = parent::getForm($model);
 
         if ($model->exists) {
-            $user = User::find($model->user_id);
-            $items = $model->commentable->toArray();
-
+            $type = strtolower(explode('\\', $model->commentable_type)[2]);
             $form->add(
-                Select::make()
-                    ->name('user_id')
-                    ->label('User')
-                    ->disabled()
-                    ->options([ $user->id => $user->name])
-            );
-
-            $form->add(
-                Select::make()
-                    ->name('commentable_id')
-                    ->disabled()
-                    ->label($model->commentable_type === 'App\\Models\\Product' ? 'Product' : 'Service')
-                    ->options([$items['id'] => $items['type']])
-            );
-
-            $form->add(
-                Input::make()
-                    ->name('body')
-                    ->disabled()
-                    ->label('Comment')
+                BladePartial::make()->view('site.comment-show')->withAdditionalParams([
+                    'type' => $type,
+                    'comment' => $model
+                ])
             );
         }
 

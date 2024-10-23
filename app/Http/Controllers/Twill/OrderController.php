@@ -60,7 +60,7 @@ class OrderController extends BaseModuleController
             $params['media_url'] = $model->orderable?->medias()?->first();
         }
 
-        $form->add(BladePartial::make()->view('new-form')->withAdditionalParams($params));
+        $form->add(BladePartial::make()->view('site.order-show')->withAdditionalParams($params));
         return $form;
     }
 

@@ -28,7 +28,16 @@ class ProductController extends BaseModuleController
     {
         $this->disablePermalink();
         $this->enableSkipCreateModal();
-        self::$formFields = [
+    }
+
+    /**
+     * See the table builder docs for more information. If you remove this method you can use the blade files.
+     * When using twill:module:make you can specify --bladeForm to use a blade form instead.
+     */
+    public function getForm(TwillModelContract $model): Form
+    {
+        $form = parent::getForm($model);
+        $fields = [
             Input::make()
                 ->name('type')
                 ->label('Тип продукта')
@@ -63,17 +72,8 @@ class ProductController extends BaseModuleController
                 ->type('number')
                 ->required()
         ];
-    }
 
-    /**
-     * See the table builder docs for more information. If you remove this method you can use the blade files.
-     * When using twill:module:make you can specify --bladeForm to use a blade form instead.
-     */
-    public function getForm(TwillModelContract $model): Form
-    {
-        $form = parent::getForm($model);
-
-        foreach (self::$formFields as $field) {
+        foreach ($fields as $field) {
             $form->add($field);
         }
 
