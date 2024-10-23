@@ -16,7 +16,7 @@ Route::prefix('/services')
     ->group(function () {
         Route::get('/', [ServiceController::class, 'index'])->name('index');
         Route::get('/all', [ServiceController::class, 'getAllServices'])->name('getAllServices');
-        Route::get('/{service}', [ServiceController::class, 'show'])->name('show');
+        Route::get('/{id}', [ServiceController::class, 'show'])->name('show');
     });
 
 Route::prefix('products')
@@ -33,7 +33,6 @@ Route::prefix('orders')
     ->group(function () {
         Route::post('/', [OrderController::class, 'store'])->name('store');
         Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
         Route::put('/{order}', [OrderController::class, 'update'])->name('update');
     });
 

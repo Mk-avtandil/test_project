@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceCollection;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -25,9 +27,15 @@ class ServiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Service $service): ServiceResource
+    public function show($id): JsonResponse
     {
-        return new ServiceResource($service);
+        try {
+            $service = Service::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Service not found'], 404);
+        }
+
+        return response()->json(['data' => $service], 200);
     }
 
     public function getAllServices(Request $request): ServiceCollection
