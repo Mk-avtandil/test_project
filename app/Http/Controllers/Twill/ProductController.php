@@ -6,10 +6,14 @@ use A17\Twill\Models\Contracts\TwillModelContract;
 use A17\Twill\Services\Forms\Fields\Medias;
 use A17\Twill\Services\Forms\Fields\Wysiwyg;
 use A17\Twill\Services\Listings\Columns\Text;
+use A17\Twill\Services\Listings\Columns\Image;
+use A17\Twill\Services\Listings\Filters\QuickFilter;
+use A17\Twill\Services\Listings\Filters\QuickFilters;
 use A17\Twill\Services\Listings\TableColumns;
 use A17\Twill\Services\Forms\Fields\Input;
 use A17\Twill\Services\Forms\Form;
 use A17\Twill\Http\Controllers\Admin\ModuleController as BaseModuleController;
+use App\Models\Product;
 
 class ProductController extends BaseModuleController
 {
@@ -20,7 +24,26 @@ class ProductController extends BaseModuleController
     protected $titleFormLabel = 'Type';
     protected $previewView = 'site.product';
 
-    private static array $formFields;
+
+    protected function getIndexTableColumns(): TableColumns
+    {
+        $columns = parent::getIndexTableColumns();
+
+        $columns->prepend(
+            Image::make()
+                ->field('cover')
+                ->title('Image')
+                ->customRender(function ($product) {
+                    return $product->medias()->get()->isNotEmpty()
+                        ? "/storage/uploads/" . $product->medias()->first()['uuid']
+                        : "/default.png";
+                })
+        );
+
+        return $columns;
+    }
+
+
     /**
      * This method can be used to enable/disable defaults. See setUpController in the docs for available options.
      */
@@ -28,7 +51,30 @@ class ProductController extends BaseModuleController
     {
         $this->disablePermalink();
         $this->enableSkipCreateModal();
-        self::$formFields = [
+    }
+
+    public function quickFilters(): QuickFilters
+    {
+        $filters = parent::quickFilters();
+
+        $filters->add(
+            QuickFilter::make()
+                ->label('In Stock')
+                ->queryString('in_stock')
+                ->scope('InStock')
+                ->amount(fn() => Product::where('quantity', '>', 0)->count())
+        );
+        return $filters;
+    }
+
+    /**
+     * See the table builder docs for more information. If you remove this method you can use the blade files.
+     * When using twill:module:make you can specify --bladeForm to use a blade form instead.
+     */
+    public function getForm(TwillModelContract $model): Form
+    {
+        $form = parent::getForm($model);
+        $fields = [
             Input::make()
                 ->name('type')
                 ->label('Тип продукта')
@@ -63,17 +109,8 @@ class ProductController extends BaseModuleController
                 ->type('number')
                 ->required()
         ];
-    }
 
-    /**
-     * See the table builder docs for more information. If you remove this method you can use the blade files.
-     * When using twill:module:make you can specify --bladeForm to use a blade form instead.
-     */
-    public function getForm(TwillModelContract $model): Form
-    {
-        $form = parent::getForm($model);
-
-        foreach (self::$formFields as $field) {
+        foreach ($fields as $field) {
             $form->add($field);
         }
 
@@ -103,15 +140,12 @@ class ProductController extends BaseModuleController
             })
         );
 
-        $table->add(
-            Text::make()->field('cover')->title('Images')->customRender(function ($product) {
-                $mediaUrl = $product->medias()->get()->isNotEmpty()
-                    ? "/storage/uploads/" . $product->medias()->first()['uuid']
-                    : "/default.png";
-
-                return $mediaUrl ? "<img src=\"{$mediaUrl}\" alt=\"{$product->type}\" style=\"width: 100px;\" />" : 'No image';
-            })
-        );
+//        $table->add(
+//            Image::make()
+//                ->field('cover')
+//                ->crop('default')
+//                ->customRender()
+//        );
 
         return $table;
     }
