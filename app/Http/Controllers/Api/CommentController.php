@@ -12,16 +12,13 @@ class CommentController extends Controller
 {
     public function store(CommentCreateRequest $request): JsonResponse
     {
-        $commentableType = $request->input('commentable_type');
-        $commentable = $commentableType === 'App\\Models\\Product'
-            ? Product::findOrFail($request->input('commentable_id'))
-            : Service::findOrFail($request->input('commentable_id'));
+        $commentable = ($request->commentable_type)::findOrFail($request->commentable_id);
 
         $comment = $commentable->comments()->create([
             'body' => $request->get('body'),
             'user_id' => auth()->id(),
         ]);
 
-        return response()->json(['comment' => $comment, 'product_or_service' => $commentable]);
+        return response()->json(['comment' => $comment, 'product_or_service' => $commentable], 201);
     }
 }

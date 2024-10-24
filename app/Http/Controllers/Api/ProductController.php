@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Product;
 use App\Search\SearchProduct;
@@ -21,7 +22,7 @@ class ProductController extends Controller
         return new ProductCollection($result);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
             $product = Product::findOrFail($id);

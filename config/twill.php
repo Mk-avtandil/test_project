@@ -11,7 +11,8 @@ return [
         'views_path' => 'site',
     ],
     'enabled' => [
-        'permissions-management' => true
+        'permissions-management' => true,
+        'users-2fa' => true,
     ],
     'permissions' => [
         'level' => \A17\Twill\Enums\PermissionLevel::LEVEL_ROLE_GROUP_ITEM,

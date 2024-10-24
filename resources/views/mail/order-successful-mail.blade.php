@@ -5,7 +5,7 @@
 </style>
 <div>
     <h4>Dear, {{$user->name}}</h4>
-    <p>You have successfully ordered <a href="{{route('product.show', ['product' => $order->orderable])}}">{{$order->orderable->type}}</a></p>
+    <p>You have successfully ordered <a href="{{route('product.show', ['id' => $order->orderable])}}">{{$order->orderable->type}}</a></p>
     <br>
     <table class="styled-table">
         <thead>
