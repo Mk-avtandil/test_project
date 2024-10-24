@@ -20,7 +20,6 @@ class OrderController extends BaseModuleController
     protected $titleColumnLabel = 'Status';
     protected $titleFormKey = 'status';
     protected $titleFormLabel = 'Status';
-    protected $previewView = 'site.order';
 
     /**
      * This method can be used to enable/disable defaults. See setUpController in the docs for available options.
@@ -56,6 +55,7 @@ class OrderController extends BaseModuleController
             'type' => $type,
             'model' => $model,
         ];
+
         if($type === 'Product') {
             $params['media_url'] = $model->orderable?->medias()?->first();
         }

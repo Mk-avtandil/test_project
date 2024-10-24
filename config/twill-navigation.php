@@ -21,5 +21,10 @@ return [
                 'module' => true
             ]
         ]
+    ],
+    'revision' => [
+        'title' => 'Revision',
+        'module' => true,
+        'route' => 'twill.revisions.index'
     ]
 ];
