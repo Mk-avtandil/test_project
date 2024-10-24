@@ -9,3 +9,4 @@ TwillRoutes::module('products');
 TwillRoutes::module('services');
 TwillRoutes::module('orders');
 TwillRoutes::module('comments');
+TwillRoutes::module('revisions');
