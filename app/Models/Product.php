@@ -76,4 +76,8 @@ class Product extends Model implements Sortable
             ],
         ],
     ];
+
+    public function scopeInStock($query) {
+        return $query->where('quantity', '>', 0);
+    }
 }

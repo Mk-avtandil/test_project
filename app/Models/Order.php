@@ -10,6 +10,7 @@ use A17\Twill\Models\Behaviors\HasRevisions;
 use A17\Twill\Models\Behaviors\HasPosition;
 use A17\Twill\Models\Behaviors\Sortable;
 use App\Events\OrderPlaced;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,5 +55,22 @@ class Order extends Model implements Sortable
         static::updated(function ($order) {
             event(new OrderPlaced($order));
         });
+    }
+
+    public function scopeProductsOnly($query): Builder
+    {
+        return $query->where('orderable_type', 'App\\Models\\Product');
+    }
+    public function scopeServicesOnly($query): Builder
+    {
+        return $query->where('orderable_type', 'App\\Models\\Service');
+    }
+
+    public function scopeCompleted($query) {
+        return $query->where('status', 'completed');
+    }
+
+    public function scopePending($query) {
+        return $query->where('status', 'pending');
     }
 }
