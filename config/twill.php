@@ -13,6 +13,7 @@ return [
     'enabled' => [
         'permissions-management' => true,
         'users-2fa' => true,
+        'users-image' => true,
     ],
     'permissions' => [
         'level' => \A17\Twill\Enums\PermissionLevel::LEVEL_ROLE_GROUP_ITEM,
