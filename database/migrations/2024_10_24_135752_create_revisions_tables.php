@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('order_records', function (Blueprint $table) {
-            $table->id();
+        Schema::create('revisions', function (Blueprint $table) {
+            // this will create an id, a "published" column, and soft delete and timestamps columns
+            createDefaultTableFields($table);
+
             $table->string('username');
             $table->string('email');
             $table->string('user_ip');
@@ -22,15 +21,11 @@ return new class extends Migration
             $table->string('status');
             $table->integer('price');
             $table->integer('total_price');
-            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('order_records');
+        Schema::dropIfExists('revisions');
     }
 };

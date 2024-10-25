@@ -13,7 +13,7 @@ class RecordOrderDetails
         $user = $order->user;
         $orderable = $order->orderable;
 
-        DB::table('order_records')->insert([
+        DB::table('revisions')->insert([
             'username' => $user->name,
             'email' => $user->email,
             'user_ip' => request()->ip(),
