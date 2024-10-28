@@ -26,5 +26,13 @@ return [
         'title' => 'Revision',
         'module' => true,
         'route' => 'twill.revisions.index'
+    ],
+    'pages' => [
+        'title' => 'Pages',
+        'module' => true,
+    ],
+    'menuLinks' => [
+        'title' => 'Menu',
+        'module' => true,
     ]
 ];

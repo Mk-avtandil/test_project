@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use A17\Twill\Models\Media;
 use App\Models\Comment;
+use App\Models\MenuLink;
 use App\Models\Order;
+use App\Models\Page;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\User;
@@ -70,5 +72,39 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'registered_at' => now(),
         ]);
+
+        $pages = Page::factory()->count(10)->create();
+        foreach($pages as $page) {
+            $id = $page->id;
+            DB::table('page_translations')->where('page_id', $id)->update([
+                'active' => 1
+            ]);
+            DB::table('menu_links')->insert([
+                'published' => 1,
+            ]);
+            DB::table('menu_link_translations')->insert([
+                'menu_link_id' => $id,
+                'active' => 1,
+                'locale' => 'en',
+                'title' => Str::random(10),
+                'description' => Str::random(300),
+            ]);
+            DB::table('twill_related')->insert([
+                'position' => $id,
+                'subject_id' => $id,
+                'subject_type' => MenuLink::class,
+                'related_id' => $id,
+                'related_type' => Page::class,
+                'browser_name' => 'page'
+            ]);
+            DB::table('page_slugs')->insert([
+                'page_id' => $id,
+                'slug' => $page->title,
+                'locale' => 'en',
+                'active' => 1,
+            ]);
+        }
+
+
     }
 }

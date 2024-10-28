@@ -10,3 +10,6 @@ TwillRoutes::module('services');
 TwillRoutes::module('orders');
 TwillRoutes::module('comments');
 TwillRoutes::module('revisions');
+
+TwillRoutes::module('pages');
+TwillRoutes::module('menuLinks');
