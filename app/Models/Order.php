@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Order extends Model implements Sortable
 {
@@ -41,21 +42,26 @@ class Order extends Model implements Sortable
         return $this->belongsTo(User::class);
     }
 
-    public function orderable(): MorphTo
+    public function products(): MorphToMany
     {
-        return $this->morphTo();
+        return $this->morphedByMany(Product::class, 'orderable');
     }
 
-    protected static function booted(): void
+    public function services(): MorphToMany
     {
-        static::created(function ($order) {
-            event(new OrderPlaced($order));
-        });
-
-        static::updated(function ($order) {
-            event(new OrderPlaced($order));
-        });
+        return $this->morphedByMany(Service::class, 'orderable');
     }
+
+//    protected static function booted(): void
+//    {
+//        static::created(function ($order) {
+//            event(new OrderPlaced($order));
+//        });
+//
+//        static::updated(function ($order) {
+//            event(new OrderPlaced($order));
+//        });
+//    }
 
     public function scopeProductsOnly($query): Builder
     {

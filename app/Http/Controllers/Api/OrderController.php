@@ -10,6 +10,7 @@ use App\Mail\OrderSuccessfulMail;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
@@ -18,7 +19,7 @@ class OrderController extends Controller
     public function store(OrderCreateRequest $request): JsonResponse
     {
         try {
-            $orderable = ($request->orderable_type)::findOrFail($request->orderable_id);
+            $orderable = (Relation::getMorphedModel($request->orderable_type))::findOrFail($request->orderable_id);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Product or Service not found'], 404);
         }
@@ -34,7 +35,7 @@ class OrderController extends Controller
 
         Mail::to(auth()->user())->send(new OrderSuccessfulMail(auth()->user(), $order));
 
-        return response()->json(['message' => 'Заказ успешно создан', 'order' => $order, 'orderable' => $orderable], 201);
+        return response()->json(['message' => 'Заказ успешно создан', 'order' => $order], 201);
     }
 
     public function index(): OrderCollection|JsonResponse

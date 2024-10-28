@@ -34,7 +34,20 @@ class DatabaseSeeder extends Seeder
 
         Product::factory()->count(40)->create();
         Service::factory()->count(40)->create();
-        Order::factory()->count(80)->create();
+        $orders = Order::factory()->count(80)->create();
+
+        $types = ['product', 'service'];
+        foreach ($orders as $order) {
+            for($i=0; $i<rand(5, 15); $i++) {
+                $type = $types[array_rand($types)];
+                DB::table('orderables')->insert([
+                    'order_id' => $order->id,
+                    'orderable_id' => rand(1, 40),
+                    'orderable_type' => $type,
+                    'quantity' => rand(1, 20),
+                ]);
+            }
+        }
 
         // Creating fake images
         $disk = Config::get('twill.media_library.disk');
@@ -74,6 +87,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $pages = Page::factory()->count(10)->create();
+        $page = Page::factory()->create([
+            'title' => 'Main Page',
+            'description' => 'This is main page description.',
+            'published' => 1
+        ]);
+//        $pages = $pages->merge(collect($page));
         foreach($pages as $page) {
             $id = $page->id;
             DB::table('page_translations')->where('page_id', $id)->update([
@@ -105,6 +124,14 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        DB::table('twill_related')->insert([
+            'position' => 1,
+            'subject_type' => 'blocks',
+            'subject_id' => 11,
+            'related_id' => 11,
+            'related_type' => Page::class,
+            'browser_name' => 'page',
+        ]);
 
     }
 }

@@ -12,9 +12,6 @@ return new class extends Migration
             // this will create an id, a "published" column, and soft delete and timestamps columns
             createDefaultTableFields($table);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->unsignedBigInteger('orderable_id');
-            $table->string('orderable_type');
-            $table->integer('quantity')->default(1);
             $table->enum('status', ['pending', 'completed']);
             $table->integer('position')->unsigned()->nullable();
 

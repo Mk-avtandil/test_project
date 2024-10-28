@@ -18,11 +18,8 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => $this->faker->numberBetween(1, 11),
-            'orderable_type' => $this->faker->randomElement(['App\\Models\\Product', 'App\\Models\\Service']),
-            'orderable_id' => $this->faker->numberBetween(1, 40),
             'status' => $this->faker->randomElement(['pending', 'completed']),
-            'published' => true,
-            'quantity' => $this->faker->numberBetween(1, 10)
+            'published' => 1
         ];
     }
 }

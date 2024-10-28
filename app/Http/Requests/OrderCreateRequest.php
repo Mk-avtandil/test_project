@@ -11,17 +11,15 @@ class OrderCreateRequest extends FormRequest
 {
     public function rules(): array
     {
-        $orderable = $this->orderable_type::find($this->orderable_id);
-
         return [
-            'orderable_type' => ['required', 'string'],
+            'orderable_type' => ['required', 'string', 'in:Product,Service'],
             'orderable_id' => ['required', 'integer'],
             'status' => ['required', Rule::in(Order::STATUSES)],
             'quantity' => [
-                Rule::excludeIf($this->orderable_type !== 'App\\Models\\Product'),
+                Rule::excludeIf(fn() => $this->orderable_type !== 'product'),
                 'required',
                 'integer',
-                new CheckQuantity($orderable)
+                new CheckQuantity($this->orderable_type, $this->orderable_id)
             ]
         ];
     }

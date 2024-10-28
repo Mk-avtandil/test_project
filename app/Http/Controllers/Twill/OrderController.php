@@ -48,34 +48,34 @@ class OrderController extends BaseModuleController
         );
     }
 
-    public function filters(): TableFilters
-    {
-        $filters = parent::filters();
-        $quantityValues = Order::select('quantity')->orderBy('quantity')->distinct()->pluck('quantity');
-        $filters->add(
-            BasicFilter::make()
-                ->label('Quantities')
-                ->queryString('quantity')
-                ->options($quantityValues)
-                ->apply(function ($builder, mixed $key) use ($quantityValues) {
-                    $builder->where('quantity', $quantityValues[$key]);
-                })
-        );
-        $filters->add(
-            BasicFilter::make()
-                ->label('Order Type')
-                ->queryString('type')
-                ->options(collect([
-                    'App\\Models\\Product' => 'Product',
-                    'App\\Models\\Service' => 'Service'
-                ]))
-                ->apply(function ($builder, mixed $value) {
-                    $builder->where('orderable_type', $value);
-                })
-        );
-
-        return $filters;
-    }
+//    public function filters(): TableFilters
+//    {
+//        $filters = parent::filters();
+//        $quantityValues = Order::select('quantity')->orderBy('quantity')->distinct()->pluck('quantity');
+//        $filters->add(
+//            BasicFilter::make()
+//                ->label('Quantities')
+//                ->queryString('quantity')
+//                ->options($quantityValues)
+//                ->apply(function ($builder, mixed $key) use ($quantityValues) {
+//                    $builder->where('quantity', $quantityValues[$key]);
+//                })
+//        );
+//        $filters->add(
+//            BasicFilter::make()
+//                ->label('Order Type')
+//                ->queryString('type')
+//                ->options(collect([
+//                    'App\\Models\\Product' => 'Product',
+//                    'App\\Models\\Service' => 'Service'
+//                ]))
+//                ->apply(function ($builder, mixed $value) {
+//                    $builder->where('orderable_type', $value);
+//                })
+//        );
+//
+//        return $filters;
+//    }
 
 
     public function quickFilters(): QuickFilters
@@ -110,15 +110,15 @@ class OrderController extends BaseModuleController
     {
         $form = new Form();
 
-        $type = explode('\\', 'App\\Models\\Product')[2];
         $params = [
-            'type' => $type,
             'model' => $model,
+            'products' => $model->products,
+            'services' => $model->services,
         ];
 
-        if($type === 'Product') {
-            $params['media_url'] = $model->orderable?->medias()?->first();
-        }
+//        if($type === 'Product') {
+//            $params['media_url'] = $model->orderable?->medias()?->first();
+//        }
 
         $form->add(BladePartial::make()->view('site.order-show')->withAdditionalParams($params));
         return $form;
@@ -138,16 +138,16 @@ class OrderController extends BaseModuleController
             }),
         );
 
-        $table->add(
-            Text::make()->field('orderable_type')->title('Product/Service')->customRender(function ($order) {
-                $type = explode('\\', $order->orderable_type);
-                $type = end($type);
-                return "$type: " . $order->orderable->type;
-            })
-        );
-        $table->add(
-            Text::make()->field('quantity')->title('Quantity')
-        );
+//        $table->add(
+//            Text::make()->field('orderable_type')->title('Product/Service')->customRender(function ($order) {
+//                $type = explode('\\', $order->orderable_type);
+//                $type = end($type);
+//                return "$type: " . $order->orderable->type;
+//            })
+//        );
+//        $table->add(
+//            Text::make()->field('quantity')->title('Quantity')
+//        );
 
         $table->add(
             Text::make()->field('created_at')->title('Created')->customRender(function ($order) {
