@@ -1,0 +1,35 @@
+Step 1: Check the Path to PHP
+
+To check where PHP is installed, follow these steps:
+
+1. Open your terminal.
+2. Enter the following command: which php
+
+This command will show you the path to the PHP executable. For example:
+
+/usr/local/Cellar/php/8.3.10/bin/php
+
+Step 2: Check the Path to Your Project
+
+To find the absolute path to your Laravel project, follow these steps:
+
+1. Open your terminal.
+2. Navigate to the root directory of your project and enter the command: pwd
+
+This command will output the absolute path to your project. For example:
+
+/Users/admin/Desktop/test_project
+
+Step 3: Set Up the Cron Job
+
+To set up a cron job to run Laravel commands:
+
+1. Open the crontab for editing:
+
+crontab -e
+
+2. Insert the following line:
+
+* * * * * /usr/local/Cellar/php/8.3.10/bin/php /Users/admin/Desktop/test_project/artisan schedule:run >> /dev/null 2>&1
+
+3. Save the changes and exit the editor.

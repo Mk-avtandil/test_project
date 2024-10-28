@@ -8,11 +8,9 @@ use A17\Twill\Services\Breadcrumbs\BreadcrumbItem;
 use A17\Twill\Services\Breadcrumbs\Breadcrumbs;
 use A17\Twill\Services\Forms\BladePartial;
 use A17\Twill\Services\Listings\Filters\BasicFilter;
-use A17\Twill\Services\Listings\Filters\BooleanFilter;
 use A17\Twill\Services\Listings\Filters\QuickFilter;
 use A17\Twill\Services\Listings\Filters\QuickFilters;
 use A17\Twill\Services\Listings\Filters\TableFilters;
-use A17\Twill\Services\Listings\Filters\TwillBaseFilter;
 use A17\Twill\Services\Listings\TableColumns;
 use A17\Twill\Services\Listings\Columns\Text;
 use A17\Twill\Services\Forms\Form;
@@ -20,8 +18,6 @@ use A17\Twill\Http\Controllers\Admin\ModuleController as BaseModuleController;
 
 use App\Models\Order;
 use App\Models\User;
-use App\Repositories\OrderRepository;
-use Illuminate\Support\Str;
 
 class OrderController extends BaseModuleController
 {
