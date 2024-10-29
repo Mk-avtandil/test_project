@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->unsignedInteger('orderable_id');
             $table->string('orderable_type');
-            $table->integer('quantity')->default(1);
+            $table->integer('quantity');
+            $table->enum(column: 'status', allowed: ['pending', 'completed']);
             $table->timestamps();
         });
     }

@@ -87,51 +87,62 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $pages = Page::factory()->count(10)->create();
-        $page = Page::factory()->create([
+        foreach($pages as $page) {
+            $this->setRelatedForPages($page);
+        }
+
+        $page = Page::factory()->count(1)->create([
             'title' => 'Main Page',
             'description' => 'This is main page description.',
             'published' => 1
-        ]);
-//        $pages = $pages->merge(collect($page));
-        foreach($pages as $page) {
-            $id = $page->id;
-            DB::table('page_translations')->where('page_id', $id)->update([
-                'active' => 1
-            ]);
-            DB::table('menu_links')->insert([
-                'published' => 1,
-            ]);
-            DB::table('menu_link_translations')->insert([
-                'menu_link_id' => $id,
-                'active' => 1,
-                'locale' => 'en',
-                'title' => Str::random(10),
-                'description' => Str::random(300),
-            ]);
-            DB::table('twill_related')->insert([
-                'position' => $id,
-                'subject_id' => $id,
-                'subject_type' => MenuLink::class,
-                'related_id' => $id,
-                'related_type' => Page::class,
-                'browser_name' => 'page'
-            ]);
-            DB::table('page_slugs')->insert([
-                'page_id' => $id,
-                'slug' => $page->title,
-                'locale' => 'en',
-                'active' => 1,
-            ]);
-        }
+        ])->first();
+
+        $this->setRelatedForPages($page);
 
         DB::table('twill_related')->insert([
             'position' => 1,
             'subject_type' => 'blocks',
-            'subject_id' => 11,
-            'related_id' => 11,
-            'related_type' => Page::class,
+            'subject_id' => $page->id,
+            'related_id' => $page->id,
+            'related_type' => 'page',
             'browser_name' => 'page',
         ]);
 
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection $page
+     * @return void
+     */
+    public function setRelatedForPages(\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection $page): void
+    {
+        $id = $page->id;
+        DB::table('page_translations')->where('page_id', $id)->update([
+            'active' => 1
+        ]);
+        DB::table('menu_links')->insert([
+            'published' => 1,
+        ]);
+        DB::table('menu_link_translations')->insert([
+            'menu_link_id' => $id,
+            'active' => 1,
+            'locale' => 'en',
+            'title' => Str::random(10),
+            'description' => Str::random(300),
+        ]);
+        DB::table('twill_related')->insert([
+            'position' => $id,
+            'subject_id' => $id,
+            'subject_type' => 'menu_link',
+            'related_id' => $id,
+            'related_type' => 'page',
+            'browser_name' => 'page'
+        ]);
+        DB::table('page_slugs')->insert([
+            'page_id' => $id,
+            'slug' => $page->title,
+            'locale' => 'en',
+            'active' => 1,
+        ]);
     }
 }

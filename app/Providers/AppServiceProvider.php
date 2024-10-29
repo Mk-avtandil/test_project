@@ -36,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
             'order' => 'App\Models\Order',
             'app_settings' => 'A17\Twill\Models\AppSetting',
             'user' => 'App\Models\User',
+            'menu_link' => 'App\Models\MenuLink',
+            'comment' => 'App\Models\Comment',
         ]);
     }
 }

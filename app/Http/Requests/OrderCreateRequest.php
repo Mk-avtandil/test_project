@@ -12,7 +12,7 @@ class OrderCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'orderable_type' => ['required', 'string', 'in:Product,Service'],
+            'orderable_type' => ['required', 'string', 'in:product,service'],
             'orderable_id' => ['required', 'integer'],
             'status' => ['required', Rule::in(Order::STATUSES)],
             'quantity' => [

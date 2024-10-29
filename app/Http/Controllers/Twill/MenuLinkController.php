@@ -20,6 +20,7 @@ class MenuLinkController extends BaseModuleController
     protected $moduleName = 'menuLinks';
     protected $showOnlyParentItemsInBrowsers = true;
     protected $nestedItemsDepth = 1;
+
     /**
      * This method can be used to enable/disable defaults. See setUpController in the docs for available options.
      */

@@ -44,7 +44,7 @@ class Order extends Model implements Sortable
 
     public function products(): MorphToMany
     {
-        return $this->morphedByMany(Product::class, 'orderable');
+        return $this->morphedByMany(Product::class, 'orderable')->withPivot('quantity');
     }
 
     public function services(): MorphToMany
