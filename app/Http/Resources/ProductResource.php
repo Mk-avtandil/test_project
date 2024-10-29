@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,6 +18,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
+            'orderable_type' => "product",
             'color' => $this->color,
             'size' => $this->size,
             'price' => $this->price,

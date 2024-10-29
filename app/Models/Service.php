@@ -14,6 +14,7 @@ use App\Listeners\UpdateServiceCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Service extends Model implements Sortable
 {
@@ -28,9 +29,9 @@ class Service extends Model implements Sortable
         'example_link'
     ];
 
-    public function orders(): MorphMany
+    public function orders(): MorphToMany
     {
-        return $this->morphMany(Order::class, 'orderable');
+        return $this->morphToMany(Order::class, 'orderable');
     }
 
     public function comments(): MorphMany

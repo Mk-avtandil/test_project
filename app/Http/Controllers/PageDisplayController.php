@@ -23,7 +23,7 @@ class PageDisplayController extends Controller
 
     public function home(): View
     {
-        if (TwillAppSettings::get('homepage.homepage.page')->isNotEmpty()) {
+        if (TwillAppSettings::get('homepage.homepage.page') and TwillAppSettings::get('homepage.homepage.page')->isNotEmpty()) {
             /** @var Page $frontPage */
             $frontPage = TwillAppSettings::get('homepage.homepage.page')->first();
 

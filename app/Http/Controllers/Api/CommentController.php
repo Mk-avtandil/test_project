@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentCreateRequest;
 use App\Models\Product;
 use App\Models\Service;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
     public function store(CommentCreateRequest $request): JsonResponse
     {
-        $commentable = ($request->commentable_type)::findOrFail($request->commentable_id);
+        $commentable = (Relation::getMorphedModel($request->orderable_type))::findOrFail($request->commentable_id);
 
         $comment = $commentable->comments()->create([
             'body' => $request->get('body'),

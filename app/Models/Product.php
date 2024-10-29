@@ -13,6 +13,7 @@ use App\Listeners\UpdateProductCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 
 class Product extends Model implements Sortable
@@ -31,8 +32,9 @@ class Product extends Model implements Sortable
         'price'
     ];
 
-    public function orders() : MorphMany {
-        return $this->morphMany(Order::class, 'orderable');
+    public function orders(): MorphToMany
+    {
+        return $this->morphToMany(Order::class, 'orderable');
     }
 
     public function comments(): MorphMany
