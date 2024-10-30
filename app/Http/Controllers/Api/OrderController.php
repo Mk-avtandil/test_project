@@ -8,8 +8,8 @@ use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Resources\OrderCollection;
 use App\Mail\OrderSuccessfulMail;
 use App\Models\Order;
+use App\Models\Orderable;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
@@ -18,24 +18,46 @@ class OrderController extends Controller
 {
     public function store(OrderCreateRequest $request): JsonResponse
     {
-        try {
-            $orderable = (Relation::getMorphedModel($request->orderable_type))::findOrFail($request->orderable_id);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => 'Product or Service not found'], 404);
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'status' => $request['status'],
+        ]);
+
+        $createdOrderables = [];
+
+        foreach ($request->orderables as $orderableData) {
+            $orderableClass = Relation::getMorphedModel($orderableData['orderable_type']);
+            $orderable = $orderableClass::find($orderableData['orderable_id']);
+
+            if (!$orderable) {
+                return response()->json(['message' => 'Product or Service not found'], 404);
+            }
+
+            if ($orderable instanceof Product) {
+                if ($orderable->quantity < $orderableData['quantity']) {
+                    return response()->json(['message' => 'Not enough quantity available for product ' . $orderable->type], 400);
+                }
+
+                $orderable->quantity -= $orderableData['quantity'];
+                $orderable->save();
+            }
+
+            $orderableEntry = Orderable::create([
+                'order_id' => $order->id,
+                'orderable_id' => $orderableData['orderable_id'],
+                'orderable_type' => $orderableData['orderable_type'],
+                'quantity' => $orderableData['quantity'],
+            ]);
+
+            $createdOrderables[] = $orderableEntry;
         }
+//        Mail::to(auth()->user())->send(new OrderSuccessfulMail(auth()->user(), $order));
 
-        $request['user_id'] = auth()->id();
-
-        $order = $orderable->orders()->create($request->all());
-
-        if ($orderable instanceof Product) {
-            $orderable->quantity-=$request->quantity;
-        }
-        $orderable->save();
-
-        Mail::to(auth()->user())->send(new OrderSuccessfulMail(auth()->user(), $order));
-
-        return response()->json(['message' => 'Заказ успешно создан', 'order' => $order], 201);
+        return response()->json([
+            'message' => 'Заказ успешно создан',
+            'order' => $order,
+            'createdOrderables' => $createdOrderables,
+        ], 201);
     }
 
     public function index(): OrderCollection|JsonResponse
@@ -46,7 +68,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $orders = Order::where('user_id', $user->id)->with('orderable', 'user')->get();
+        $orders = Order::where('user_id', $user->id)->with('orderables.orderable')->get();
 
         return new OrderCollection($orders);
     }

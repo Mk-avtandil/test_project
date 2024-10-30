@@ -2,17 +2,16 @@
 
 namespace App\Rules;
 
+use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class CheckQuantity implements ValidationRule
 {
-    public string $orderable_type;
-    public int $orderable_id;
-    public function __construct(string $orderable_type, string $orderable_id) {
-        $this->orderable_type = $orderable_type;
-        $this->orderable_id = $orderable_id;
+    public $orderables;
+
+    public function __construct($orderables) {
+        $this->orderables = $orderables;
     }
 
     /**
@@ -22,11 +21,27 @@ class CheckQuantity implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $orderable = (Relation::getMorphedModel($this->orderable_type))::findOrFail($this->orderable_id);
-        if ($orderable?->quantity === 0) {
-            $fail("The Product '{$orderable?->type}' is out of stock");
-        } elseif ($value > $orderable?->quantity) {
-            $fail("The {$attribute} must be less than or equal to {$orderable?->quantity}");
+        $orderables = $this->orderables;
+        
+        $orderableIds = array_column($orderables, 'orderable_id');
+
+        $products = Product::whereIn('id', $orderableIds)->get();
+
+        $productsById = $products->keyBy('id');
+
+        foreach ($orderables as $orderable) {
+            $orderableId = $orderable['orderable_id'];
+            $quantityRequested = $orderable['quantity'];
+
+            if (isset($productsById[$orderableId])) {
+                $product = $productsById[$orderableId];
+
+                if ($quantityRequested > $product->quantity) {
+                    $fail('The quantity of product ' . $product->type . ' must be less than or equal to ' . $product->quantity);
+                }
+            } else {
+                $fail('Product with ID ' . $orderableId . ' not found.');
+            }
         }
     }
 }

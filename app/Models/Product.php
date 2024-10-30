@@ -32,9 +32,9 @@ class Product extends Model implements Sortable
         'price'
     ];
 
-    public function orders(): MorphToMany
+    public function orderables(): MorphToMany
     {
-        return $this->morphToMany(Order::class, 'orderable');
+        return $this->morphToMany(Orderable::class, 'orderable');
     }
 
     public function comments(): MorphMany

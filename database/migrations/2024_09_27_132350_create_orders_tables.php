@@ -12,26 +12,18 @@ return new class extends Migration
             // this will create an id, a "published" column, and soft delete and timestamps columns
             createDefaultTableFields($table);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->enum('status', ['pending', 'completed']);
+            $table->enum('status', ['pending', 'completed'])->nullable();
             $table->integer('position')->unsigned()->nullable();
-
-            // add those 2 columns to enable publication timeframe fields (you can use publish_start_date only if you don't need to provide the ability to specify an end date)
-            // $table->timestamp('publish_start_date')->nullable();
-            // $table->timestamp('publish_end_date')->nullable();
         });
 
         Schema::create('order_slugs', function (Blueprint $table) {
             createDefaultSlugsTableFields($table, 'order');
         });
 
-        Schema::create('order_revisions', function (Blueprint $table) {
-            createDefaultRevisionsTableFields($table, 'order');
-        });
     }
 
     public function down()
     {
-        Schema::dropIfExists('order_revisions');
         Schema::dropIfExists('order_slugs');
         Schema::dropIfExists('orders');
     }

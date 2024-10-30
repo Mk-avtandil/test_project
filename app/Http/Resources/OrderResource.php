@@ -16,11 +16,19 @@ class OrderResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'orderable_type' => $this->orderable_type,
-            'orderable_id' => $this->orderable,
-            'quantity' => $this->quantity,
-            'status' => $this->status
+            'order' => [
+                'id' => $this->id,
+                'status' => $this->status,
+                'user_id' => $this->user_id,
+            ],
+
+            'orderables' => $this->orderables->map(function ($orderable) {
+                $orderableModel = $orderable->orderable;
+
+                return [
+                    $orderableModel
+                ];
+            }),
         ];
     }
 }

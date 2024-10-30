@@ -29,9 +29,9 @@ class Service extends Model implements Sortable
         'example_link'
     ];
 
-    public function orders(): MorphToMany
+    public function orderables(): MorphToMany
     {
-        return $this->morphToMany(Order::class, 'orderable');
+        return $this->morphToMany(Orderable::class, 'orderable');
     }
 
     public function comments(): MorphMany

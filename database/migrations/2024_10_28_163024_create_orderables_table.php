@@ -12,12 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orderables', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->unsignedInteger('orderable_id');
             $table->string('orderable_type');
             $table->integer('quantity');
-            $table->enum(column: 'status', allowed: ['pending', 'completed']);
             $table->timestamps();
         });
     }
