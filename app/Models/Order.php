@@ -6,28 +6,22 @@ use A17\Twill\Models\Behaviors\HasBlocks;
 use A17\Twill\Models\Behaviors\HasSlug;
 use A17\Twill\Models\Behaviors\HasMedias;
 use A17\Twill\Models\Behaviors\HasFiles;
-use A17\Twill\Models\Behaviors\HasRevisions;
 use A17\Twill\Models\Behaviors\HasPosition;
 use A17\Twill\Models\Behaviors\Sortable;
-use App\Events\OrderPlaced;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model implements Sortable
 {
-    use HasBlocks, HasSlug, HasMedias, HasFiles, HasRevisions, HasPosition, HasFactory;
+    use HasBlocks, HasSlug, HasMedias, HasFiles, HasPosition, HasFactory;
 
     const STATUSES = ['pending', 'completed'];
 
     protected $fillable = [
         'user_id',
-        'orderable_type',
-        'orderable_id',
-        'quantity',
         'status',
         'published',
         'position',
@@ -42,14 +36,9 @@ class Order extends Model implements Sortable
         return $this->belongsTo(User::class);
     }
 
-    public function products(): MorphToMany
+    public function orderables() : HasMany
     {
-        return $this->morphedByMany(Product::class, 'orderable')->withPivot('quantity');
-    }
-
-    public function services(): MorphToMany
-    {
-        return $this->morphedByMany(Service::class, 'orderable');
+        return $this->hasMany(Orderable::class);
     }
 
 //    protected static function booted(): void
