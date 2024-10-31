@@ -3,29 +3,36 @@
 namespace App\Listeners;
 
 use App\Events\OrderPlaced;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+
 
 class RecordOrderDetails
 {
     public function handle(OrderPlaced $event)
     {
-        $order = $event->order;
-        $user = $order->user;
-        $orderable = $order->orderable;
+        $user = $event->order->user;
+        $orderId = $event->order->id;
+        $order = Order::with('orderables')->find($orderId);
 
-        DB::table('revisions')->insert([
-            'username' => $user->name,
-            'email' => $user->email,
-            'user_ip' => request()->ip(),
-            'device_name' => $this->getDeviceName(),
-            'product_name' => $orderable->type,
-            'quantity' => $order->quantity,
-            'status' => $order->status,
-            'price' => $orderable->price,
-            'total_price' => $order->quantity * $orderable->price,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+
+        foreach ($order->orderables as $orderable) {
+            $orderableModel = $orderable->orderable;
+
+            DB::table('revisions')->insert([
+                'username' => $order->user->name,
+                'email' => $order->user->email,
+                'user_ip' => request()->ip(),
+                'device_name' => $this->getDeviceName(),
+                'product_name' => $orderableModel->type,
+                'quantity' => $orderable->quantity,
+                'status' => $order->status,
+                'price' => $orderableModel->price,
+                'total_price' => ($orderable->quantity ?? 1) * $orderableModel->price,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 
     protected function getDeviceName()

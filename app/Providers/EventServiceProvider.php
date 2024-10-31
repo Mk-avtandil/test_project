@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Events\OrderPlaced;
+use App\Listeners\RecordOrderDetails;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        'App\Events\OrderPlaced' => [
-            'App\Listeners\RecordOrderDetails',
+        OrderPlaced::class => [
+            RecordOrderDetails::class,
         ],
     ];
 }

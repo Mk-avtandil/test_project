@@ -48,19 +48,19 @@ class OrderController extends BaseModuleController
         );
     }
 
-//    public function filters(): TableFilters
-//    {
-//        $filters = parent::filters();
-//        $quantityValues = Order::select('quantity')->orderBy('quantity')->distinct()->pluck('quantity');
-//        $filters->add(
-//            BasicFilter::make()
-//                ->label('Quantities')
-//                ->queryString('quantity')
-//                ->options($quantityValues)
-//                ->apply(function ($builder, mixed $key) use ($quantityValues) {
-//                    $builder->where('quantity', $quantityValues[$key]);
-//                })
-//        );
+    public function filters(): TableFilters
+    {
+        $filters = parent::filters();
+        $statusValues = Order::select('status')->distinct()->pluck('status');
+        $filters->add(
+            BasicFilter::make()
+                ->label('Status')
+                ->queryString('status')
+                ->options($statusValues)
+                ->apply(function ($builder, mixed $value) {
+                    $builder->where('status', $value);
+                })
+        );
 //        $filters->add(
 //            BasicFilter::make()
 //                ->label('Order Type')
@@ -73,9 +73,9 @@ class OrderController extends BaseModuleController
 //                    $builder->where('orderable_type', $value);
 //                })
 //        );
-//
-//        return $filters;
-//    }
+
+        return $filters;
+    }
 
 
     public function quickFilters(): QuickFilters

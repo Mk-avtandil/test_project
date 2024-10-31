@@ -8,6 +8,7 @@ use A17\Twill\Models\Behaviors\HasMedias;
 use A17\Twill\Models\Behaviors\HasFiles;
 use A17\Twill\Models\Behaviors\HasPosition;
 use A17\Twill\Models\Behaviors\Sortable;
+use App\Events\OrderPlaced;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use A17\Twill\Models\Model;
@@ -41,17 +42,6 @@ class Order extends Model implements Sortable
         return $this->hasMany(Orderable::class);
     }
 
-//    protected static function booted(): void
-//    {
-//        static::created(function ($order) {
-//            event(new OrderPlaced($order));
-//        });
-//
-//        static::updated(function ($order) {
-//            event(new OrderPlaced($order));
-//        });
-//    }
-
     public function scopeProductsOnly($query): Builder
     {
         return $query->where('orderable_type', 'App\\Models\\Product');
@@ -67,5 +57,16 @@ class Order extends Model implements Sortable
 
     public function scopePending($query) {
         return $query->where('status', 'pending');
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function ($order) {
+            event(new OrderPlaced($order));
+        });
+
+        static::updated(function ($order) {
+            event(new OrderPlaced($order));
+        });
     }
 }
