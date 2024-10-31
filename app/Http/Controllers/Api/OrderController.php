@@ -51,13 +51,9 @@ class OrderController extends Controller
 
             $createdOrderables[] = $orderableEntry;
         }
-//        Mail::to(auth()->user())->send(new OrderSuccessfulMail(auth()->user(), $order));
+        Mail::to(auth()->user())->send(new OrderSuccessfulMail(auth()->user(), $order));
 
-        return response()->json([
-            'message' => 'Заказ успешно создан',
-            'order' => $order,
-            'createdOrderables' => $createdOrderables,
-        ], 201);
+        return response()->json(['message' => 'Заказ успешно создан'], 201);
     }
 
     public function index(): OrderCollection|JsonResponse
@@ -69,6 +65,10 @@ class OrderController extends Controller
         }
 
         $orders = Order::where('user_id', $user->id)->with('orderables.orderable')->get();
+
+        if ($orders->isEmpty()) {
+            return response()->json(['message' => 'No orders found.'], 404);
+        }
 
         return new OrderCollection($orders);
     }

@@ -15,6 +15,8 @@ class OrderPlaced
     /**
      * Create a new event instance.
      */
+    public $order;
+
     public function __construct(Order $order)
     {
         $this->order = $order;
